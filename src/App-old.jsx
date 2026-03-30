@@ -7,11 +7,11 @@ import Pricing from './components/Pricing';
 import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import './main.css';
+import './styles/globals.css';
 
 function App() {
   return (
-    <div className="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+    <div className="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container scroll-smooth">
       <Navigation />
       <Hero />
       <WelcomeFeatures />
