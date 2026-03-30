@@ -5,7 +5,7 @@ const Hero = () => {
     <section className="relative min-h-[80vh] sm:min-h-[85vh] md:min-h-[90vh] flex items-center overflow-hidden pt-16 sm:pt-20" id="home">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#091d2e] via-[#0f2942] to-[#1a3d5c]"></div>
-        <div className="absolute inset-0 bg-[url('/src/assets/unnamed.png')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('/src/assets/unnamed.png')] bg-cover bg-center opacity-40"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#091d2e]/80 via-transparent to-transparent"></div>
       </div>
       
