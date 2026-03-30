@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import wheel from '../assets/logo.png';
 
-const AdminSidebar = ({ onClose }) => {
+const AdminSidebar = ({ onClose, onLogout }) => {
   const location = useLocation();
 
   const isActive = (path) => {
@@ -31,8 +31,8 @@ const AdminSidebar = ({ onClose }) => {
             <img src={wheel} alt="De Admiraal" className="w-6 h-6 object-contain" />
           </div>
           <div>
-            <h1 className="text-lg lg:text-xl font-bold text-white tracking-tight">De Admiraal</h1>
-            <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Admin Panel</p>
+            <p className="text-xs font-bold text-white">Admin</p>
+            <p className="text-[10px] text-white/60">Beheerder</p>
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@ const AdminSidebar = ({ onClose }) => {
           onClick={handleLinkClick}
         >
           <span className="material-symbols-outlined">dashboard</span>
-          <span className="font-medium text-sm lg:text-base">Dashboard</span>
+          <span className="font-medium text-sm lg:text-base">Overzicht</span>
         </Link>
         <Link 
           to="/admin/packages" 
@@ -52,7 +52,7 @@ const AdminSidebar = ({ onClose }) => {
           onClick={handleLinkClick}
         >
           <span className="material-symbols-outlined">inventory_2</span>
-          <span className="font-medium text-sm lg:text-base">Packages</span>
+          <span className="font-medium text-sm lg:text-base">Pakketten</span>
         </Link>
         <Link 
           to="/admin/posts" 
@@ -68,7 +68,7 @@ const AdminSidebar = ({ onClose }) => {
           onClick={handleLinkClick}
         >
           <span className="material-symbols-outlined">chat</span>
-          <span className="font-medium text-sm lg:text-base">Messages</span>
+          <span className="font-medium text-sm lg:text-base">Berichten</span>
         </Link>
         <Link 
           to="/admin/profile" 
@@ -76,14 +76,17 @@ const AdminSidebar = ({ onClose }) => {
           onClick={handleLinkClick}
         >
           <span className="material-symbols-outlined">person</span>
-          <span className="font-medium text-sm lg:text-base">Profile</span>
+          <span className="font-medium text-sm lg:text-base">Profiel</span>
         </Link>
       </nav>
       
       <div className="px-3 lg:px-4 mt-auto pt-6 border-t border-white/20">
-        <button className="flex items-center gap-3 px-3 lg:px-4 py-3 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/20 transition-all w-full">
+        <button 
+          onClick={onLogout}
+          className="flex items-center gap-3 px-3 lg:px-4 py-3 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/20 transition-all w-full"
+        >
           <span className="material-symbols-outlined">logout</span>
-          <span className="font-medium text-sm lg:text-base">Logout</span>
+          <span className="font-medium text-sm lg:text-base">Uitloggen</span>
         </button>
       </div>
     </aside>

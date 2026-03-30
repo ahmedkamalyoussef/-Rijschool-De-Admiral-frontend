@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import AdminSidebar from './AdminSidebar';
 
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#091d2e] via-[#0f2942] to-[#1a3d5c]">
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
+      <div className={`fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
-        <AdminSidebar onClose={() => setSidebarOpen(false)} />
+        <AdminSidebar onClose={() => setSidebarOpen(false)} onLogout={logout} />
       </div>
 
       {/* Overlay for mobile */}
@@ -42,11 +46,11 @@ const AdminLayout = ({ children }) => {
             
             <div className="flex items-center gap-2 lg:gap-3">
               <div className="text-right hidden sm:block">
-                <p className="text-xs font-bold text-white">Admin</p>
+                <p className="text-xs font-bold text-white">{user?.firstName || 'Admin'}</p>
                 <p className="text-[10px] text-white/60">Administrator</p>
               </div>
               <div className="w-8 h-8 rounded-full bg-[#f64c01] flex items-center justify-center">
-                <span className="text-white font-bold text-sm">A</span>
+                <span className="text-white font-bold text-sm">{user?.firstName?.charAt(0) || 'A'}</span>
               </div>
             </div>
           </div>

@@ -34,6 +34,43 @@ api.interceptors.response.use(
       localStorage.removeItem('adminToken');
       window.location.href = '/login';
     }
+    
+    // Enhanced error messages in Arabic
+    if (error.response) {
+      // Server responded with error status
+      const status = error.response.status;
+      const originalMessage = error.response.data?.message;
+      
+      switch (status) {
+        case 400:
+          error.message = originalMessage || 'بيانات غير صالحة';
+          break;
+        case 401:
+          error.message = originalMessage || 'غير مصرح بالوصول، يرجى تسجيل الدخول';
+          break;
+        case 403:
+          error.message = originalMessage || 'ممنوع الوصول';
+          break;
+        case 404:
+          error.message = originalMessage || 'المورد غير موجود';
+          break;
+        case 429:
+          error.message = originalMessage || 'طلبات كثيرة جداً، يرجى المحاولة لاحقاً';
+          break;
+        case 500:
+          error.message = originalMessage || 'خطأ في الخادم الداخلي';
+          break;
+        default:
+          error.message = originalMessage || 'حدث خطأ غير متوقع';
+      }
+    } else if (error.request) {
+      // Request made but no response received
+      error.message = 'لا يمكن الاتصال بالخادم، يرجى التحقق من اتصال الإنترنت';
+    } else {
+      // Something else happened
+      error.message = 'حدث خطأ أثناء إعداد الطلب';
+    }
+    
     return Promise.reject(error);
   }
 );

@@ -10,13 +10,16 @@ export const postService = {
   getAllPosts: () => api.get('/api/v1/posts'),
   createPost: (postData) => {
     const formData = new FormData();
-    Object.keys(postData).forEach(key => {
-      if (key === 'image') {
-        formData.append('image', postData[key]);
-      } else {
-        formData.append(key, postData[key]);
-      }
-    });
+    // Map frontend fields to backend fields
+    formData.append('fullName', postData.fullName || postData.title);
+    formData.append('stars', postData.stars || postData.rating);
+    formData.append('descriptionAr', postData.descriptionAr || postData.content || '');
+    formData.append('descriptionNl', postData.descriptionNl || postData.content || '');
+    
+    if (postData.image) {
+      formData.append('image', postData.image);
+    }
+    
     return api.post('/api/v1/posts', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -25,13 +28,16 @@ export const postService = {
   },
   updatePost: (id, postData) => {
     const formData = new FormData();
-    Object.keys(postData).forEach(key => {
-      if (key === 'image') {
-        formData.append('image', postData[key]);
-      } else {
-        formData.append(key, postData[key]);
-      }
-    });
+    // Map frontend fields to backend fields
+    formData.append('fullName', postData.fullName || postData.title);
+    formData.append('stars', postData.stars || postData.rating);
+    formData.append('descriptionAr', postData.descriptionAr || postData.content || '');
+    formData.append('descriptionNl', postData.descriptionNl || postData.content || '');
+    
+    if (postData.image) {
+      formData.append('image', postData.image);
+    }
+    
     return api.put(`/api/v1/posts/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
