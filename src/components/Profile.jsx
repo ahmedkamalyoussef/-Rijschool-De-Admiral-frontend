@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
+import { adminService } from '../services/adminService';
 import wheel from '../assets/wheel.png';
 
 const Profile = () => {
@@ -7,8 +8,7 @@ const Profile = () => {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
-    image: null
+    imageUrl: null
   });
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -25,13 +25,9 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/admin/profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await response.json();
-      if (data.status) {
-        setProfile(data.data || {});
+      const response = await adminService.getProfile();
+      if (response.data.status) {
+        setProfile(response.data.data || {});
       }
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -46,21 +42,11 @@ const Profile = () => {
     setMessage('');
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/admin/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(profile)
-      });
-
-      const data = await response.json();
-      if (data.status) {
+      const response = await adminService.updateProfile(profile);
+      if (response.data.status) {
         setMessage('Profile updated successfully!');
       } else {
-        setMessage(data.message || 'Error updating profile');
+        setMessage(response.data.message || 'Error updating profile');
       }
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -82,33 +68,16 @@ const Profile = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/admin/change-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          currentPassword: passwordData.currentPassword,
-          newPassword: passwordData.newPassword
-        })
+      await adminService.changePassword(passwordData);
+      setMessage('Password changed successfully!');
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
       });
-
-      const data = await response.json();
-      if (data.status) {
-        setMessage('Password changed successfully!');
-        setPasswordData({
-          currentPassword: '',
-          newPassword: '',
-          confirmPassword: ''
-        });
-      } else {
-        setMessage(data.message || 'Error changing password');
-      }
     } catch (error) {
       console.error('Error changing password:', error);
-      setMessage('Error changing password');
+      setMessage(error.message || 'Error changing password');
     } finally {
       setUpdating(false);
     }
@@ -117,20 +86,10 @@ const Profile = () => {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('image', file);
-
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/api/admin/image', {
-          method: 'PUT',
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData
-        });
-
-        const data = await response.json();
-        if (data.status) {
-          setProfile(prev => ({ ...prev, image: data.data.image }));
+        const response = await adminService.updateImage(file);
+        if (response.data.status) {
+          setProfile(prev => ({ ...prev, imageUrl: response.data.data.imageUrl }));
           setMessage('Profile picture updated!');
         }
       } catch (error) {
@@ -173,8 +132,8 @@ const Profile = () => {
             <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-6 text-center">
               <div className="relative inline-block mb-4">
                 <div className="w-32 h-32 rounded-full bg-[#f64c01] flex items-center justify-center mx-auto border-4 border-white/20">
-                  {profile.image ? (
-                    <img src={profile.image} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                  {profile.imageUrl ? (
+                    <img src={`http://localhost:5000${profile.imageUrl}`} alt="Profile" className="w-full h-full rounded-full object-cover" />
                   ) : (
                     <span className="text-white text-4xl font-bold">
                       {profile.firstName?.charAt(0) || 'A'}{profile.lastName?.charAt(0) || ''}
@@ -193,12 +152,12 @@ const Profile = () => {
               <p className="text-white/60 text-sm mb-4">Administrator</p>
               
               <div className="space-y-2">
-                <button className="w-full bg-white/10 text-white py-2 rounded-lg hover:bg-white/20 transition-all">
+                {/* <button className="w-full bg-white/10 text-white py-2 rounded-lg hover:bg-white/20 transition-all">
                   Upload New Photo
-                </button>
-                <button className="w-full bg-white/10 text-white py-2 rounded-lg hover:bg-white/20 transition-all">
+                </button> */}
+                {/* <button className="w-full bg-white/10 text-white py-2 rounded-lg hover:bg-white/20 transition-all">
                   Remove Photo
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -243,16 +202,7 @@ const Profile = () => {
                     value={profile.email}
                     onChange={(e) => setProfile({...profile, email: e.target.value})}
                     required
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-semibold text-white/70 mb-2">Phone Number</label>
-                  <input
-                    type="tel"
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:border-[#f64c01] focus:ring-2 focus:ring-[#f64c01]/20 outline-none"
-                    value={profile.phone}
-                    onChange={(e) => setProfile({...profile, phone: e.target.value})}
+                    disabled
                   />
                 </div>
                 

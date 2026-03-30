@@ -50,7 +50,11 @@ const AdminLayout = ({ children }) => {
                 <p className="text-[10px] text-white/60">Administrator</p>
               </div>
               <div className="w-8 h-8 rounded-full bg-[#f64c01] flex items-center justify-center">
-                <span className="text-white font-bold text-sm">{user?.firstName?.charAt(0) || 'A'}</span>
+                {user?.imageUrl ? (
+                  <img src={`http://localhost:5000${user.imageUrl}`} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                ) : (
+                  <span className="text-white font-bold text-sm">{user?.firstName?.charAt(0) || 'A'}</span>
+                )}
               </div>
             </div>
           </div>
