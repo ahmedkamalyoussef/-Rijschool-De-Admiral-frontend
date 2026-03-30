@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import i18n from '../i18n/i18n.js';
 import wheel from '../assets/logo.png';
 
 const Login = () => {
@@ -14,9 +15,26 @@ const Login = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [currentLang, setCurrentLang] = useState(i18n.language || 'nl');
 
   const navigate = useNavigate();
   const { login, verifyOTP, forgotPassword, resetPassword, clearError, resendOTP } = useAuth();
+
+  useEffect(() => {
+    const handleLanguageChanged = (lng) => setCurrentLang(lng);
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => i18n.off('languageChanged', handleLanguageChanged);
+  }, []);
+
+  // Translation helper
+  const t = (key) => i18n.t(key);
+
+  const toggleLanguage = () => {
+    const newLang = currentLang === 'nl' ? 'ar' : 'nl';
+    i18n.changeLanguage(newLang);
+    document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = newLang;
+  };
 
   const handleInputChange = (e) => {
     setFormData({
@@ -152,8 +170,8 @@ const Login = () => {
   const renderLoginForm = () => (
     <form onSubmit={handleLogin} className="space-y-6">
       <div>
-        <label className="block text-white/70 text-sm font-medium mb-2">
-          البريد الإلكتروني
+        <label className={`block text-white/70 text-sm font-medium mb-2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
+          {t('login.email')}
         </label>
         <input
           type="email"
@@ -161,14 +179,15 @@ const Login = () => {
           value={formData.email}
           onChange={handleInputChange}
           required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all"
+          className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="admin@example.com"
+          style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
         />
       </div>
 
       <div>
-        <label className="block text-white/70 text-sm font-medium mb-2">
-          كلمة المرور
+        <label className={`block text-white/70 text-sm font-medium mb-2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
+          {t('login.password')}
         </label>
         <input
           type="password"
@@ -176,8 +195,9 @@ const Login = () => {
           value={formData.password}
           onChange={handleInputChange}
           required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all"
+          className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="••••••••"
+          style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
         />
       </div>
 
@@ -186,31 +206,31 @@ const Login = () => {
         disabled={isLoading}
         className="w-full bg-[#f64c01] text-white py-3 rounded-lg font-bold hover:bg-[#e54200] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? 'جاري إرسال الكود...' : 'تسجيل الدخول'}
+        {isLoading ? (currentLang === 'ar' ? 'جاري التحميل...' : 'Loading...') : t('login.submit')}
       </button>
 
       <button
         type="button"
         onClick={() => setStep('forgot')}
-        className="w-full text-white/60 hover:text-white text-sm transition-colors"
+        className={`w-full text-white/60 hover:text-white text-sm transition-colors ${currentLang === 'ar' ? 'text-right' : ''}`}
       >
-        نسيت كلمة المرور؟
+        {t('login.forgot_password')}
       </button>
     </form>
   );
 
   const renderOTPForm = () => (
     <form onSubmit={handleVerifyOTP} className="space-y-6">
-      <div className="text-center mb-6">
+      <div className={`text-center mb-6 ${currentLang === 'ar' ? 'text-right' : ''}`}>
         <p className="text-white/70">
-          تم إرسال كود التأكيد المكون من 6 أرقام إلى بريدك الإلكتروني
+          {t('login.enter_otp')}
         </p>
         <p className="text-white font-medium">{formData.email}</p>
       </div>
 
       <div>
-        <label className="block text-white/70 text-sm font-medium mb-2">
-          أدخل كود التأكيد
+        <label className={`block text-white/70 text-sm font-medium mb-2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
+          {t('login.otp_verification')}
         </label>
         <input
           type="text"
@@ -219,8 +239,9 @@ const Login = () => {
           onChange={handleInputChange}
           required
           maxLength={6}
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all text-center text-2xl tracking-widest"
+          className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all text-center text-2xl tracking-widest ${currentLang === 'ar' ? 'direction-rtl' : ''}`}
           placeholder="123456"
+          style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
         />
       </div>
 
@@ -229,7 +250,7 @@ const Login = () => {
         disabled={isLoading}
         className="w-full bg-[#f64c01] text-white py-3 rounded-lg font-bold hover:bg-[#e54200] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? 'جاري التحقق...' : 'تحقق من الكود'}
+        {isLoading ? (currentLang === 'ar' ? 'جاري التحقق...' : 'Verifying...') : t('login.verify')}
       </button>
 
       <div className="flex justify-between">
@@ -238,7 +259,7 @@ const Login = () => {
           onClick={() => setStep('login')}
           className="text-white/60 hover:text-white text-sm transition-colors"
         >
-          العودة لتسجيل الدخول
+          {t('login.back_to_login')}
         </button>
         <button
           type="button"
@@ -246,7 +267,7 @@ const Login = () => {
           disabled={isLoading}
           className="text-white/60 hover:text-white text-sm transition-colors disabled:opacity-50"
         >
-          إعادة إرسال الكود
+          {t('login.resend')}
         </button>
       </div>
     </form>
@@ -255,8 +276,8 @@ const Login = () => {
   const renderForgotPasswordForm = () => (
     <form onSubmit={handleForgotPassword} className="space-y-6">
       <div>
-        <label className="block text-white/70 text-sm font-medium mb-2">
-          Email Address
+        <label className={`block text-white/70 text-sm font-medium mb-2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
+          {t('login.email')}
         </label>
         <input
           type="email"
@@ -264,8 +285,9 @@ const Login = () => {
           value={formData.email}
           onChange={handleInputChange}
           required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all"
+          className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="admin@example.com"
+          style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
         />
       </div>
 
@@ -274,31 +296,31 @@ const Login = () => {
         disabled={isLoading}
         className="w-full bg-[#f64c01] text-white py-3 rounded-lg font-bold hover:bg-[#e54200] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? 'Sending OTP...' : 'Send Reset OTP'}
+        {isLoading ? (currentLang === 'ar' ? 'جاري الإرسال...' : 'Sending...') : (currentLang === 'ar' ? 'إرسال رمز التحقق' : 'Send Reset OTP')}
       </button>
 
       <button
         type="button"
         onClick={() => setStep('login')}
-        className="w-full text-white/60 hover:text-white text-sm transition-colors"
+        className={`w-full text-white/60 hover:text-white text-sm transition-colors ${currentLang === 'ar' ? 'text-right' : ''}`}
       >
-        Back to Login
+        {t('login.back_to_login')}
       </button>
     </form>
   );
 
   const renderResetPasswordForm = () => (
     <form onSubmit={handleResetPassword} className="space-y-6">
-      <div className="text-center mb-6">
+      <div className={`text-center mb-6 ${currentLang === 'ar' ? 'text-right' : ''}`}>
         <p className="text-white/70">
-          Enter OTP sent to your email and new password
+          {currentLang === 'ar' ? 'أدخل رمز التحقق المرسل إلى بريدك الإلكتروني وكلمة المرور الجديدة' : 'Enter OTP sent to your email and new password'}
         </p>
         <p className="text-white font-medium">{formData.email}</p>
       </div>
 
       <div>
-        <label className="block text-white/70 text-sm font-medium mb-2">
-          OTP
+        <label className={`block text-white/70 text-sm font-medium mb-2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
+          {t('login.otp_verification')}
         </label>
         <input
           type="text"
@@ -307,14 +329,15 @@ const Login = () => {
           onChange={handleInputChange}
           required
           maxLength={6}
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all text-center text-2xl tracking-widest"
+          className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all text-center text-2xl tracking-widest ${currentLang === 'ar' ? 'direction-rtl' : ''}`}
           placeholder="123456"
+          style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
         />
       </div>
 
       <div>
-        <label className="block text-white/70 text-sm font-medium mb-2">
-          New Password
+        <label className={`block text-white/70 text-sm font-medium mb-2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
+          {t('login.new_password')}
         </label>
         <input
           type="password"
@@ -322,14 +345,15 @@ const Login = () => {
           value={formData.newPassword}
           onChange={handleInputChange}
           required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all"
+          className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="••••••••"
+          style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
         />
       </div>
 
       <div>
-        <label className="block text-white/70 text-sm font-medium mb-2">
-          Confirm New Password
+        <label className={`block text-white/70 text-sm font-medium mb-2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
+          {t('login.confirm_password')}
         </label>
         <input
           type="password"
@@ -337,8 +361,9 @@ const Login = () => {
           value={formData.confirmPassword}
           onChange={handleInputChange}
           required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all"
+          className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="••••••••"
+          style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
         />
       </div>
 
@@ -347,7 +372,7 @@ const Login = () => {
         disabled={isLoading}
         className="w-full bg-[#f64c01] text-white py-3 rounded-lg font-bold hover:bg-[#e54200] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? 'Resetting...' : 'Reset Password'}
+        {isLoading ? (currentLang === 'ar' ? 'جاري إعادة التعيين...' : 'Resetting...') : t('login.reset_password')}
       </button>
 
       <div className="flex justify-between">
@@ -356,7 +381,7 @@ const Login = () => {
           onClick={() => setStep('login')}
           className="text-white/60 hover:text-white text-sm transition-colors"
         >
-          Back to Login
+          {t('login.back_to_login')}
         </button>
         <button
           type="button"
@@ -364,7 +389,7 @@ const Login = () => {
           disabled={isLoading}
           className="text-white/60 hover:text-white text-sm transition-colors disabled:opacity-50"
         >
-          Resend OTP
+          {t('login.resend')}
         </button>
       </div>
     </form>
@@ -372,6 +397,17 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#091d2e] via-[#0f2942] to-[#1a3d5c] flex items-center justify-center p-4">
+      {/* Language Toggle Button */}
+      <button
+        onClick={toggleLanguage}
+        className="fixed top-4 right-4 z-50 flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all text-sm font-medium"
+        title={currentLang === 'ar' ? 'Nederlands' : 'العربية'}
+      >
+        <span className="material-symbols-outlined text-lg">language</span>
+        <span className="hidden sm:inline">{currentLang === 'ar' ? 'Nederlands' : 'العربية'}</span>
+        <span className="sm:hidden">{currentLang === 'ar' ? 'NL' : 'ع'}</span>
+      </button>
+
       <div className="w-full max-w-md">
         <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-8">
           {/* Logo */}
@@ -382,18 +418,18 @@ const Login = () => {
           </div>
 
           {/* Title */}
-          <div className="text-center mb-8">
+          <div className={`text-center mb-8 ${currentLang === 'ar' ? 'text-right' : ''}`}>
             <h1 className="text-2xl font-bold text-white mb-2">
-              {step === 'login' && 'Admin Login'}
-              {step === 'otp' && 'Verify OTP'}
-              {step === 'forgot' && 'Forgot Password'}
-              {step === 'reset' && 'Reset Password'}
+              {step === 'login' && t('login.title')}
+              {step === 'otp' && t('login.otp_verification')}
+              {step === 'forgot' && (currentLang === 'ar' ? 'نسيت كلمة المرور' : 'Forgot Password')}
+              {step === 'reset' && t('login.reset_password')}
             </h1>
             <p className="text-white/70 text-sm">
-              {step === 'login' && 'Enter your credentials to access the admin panel'}
-              {step === 'otp' && 'Enter the 6-digit code from your email'}
-              {step === 'forgot' && 'Enter your email to receive reset instructions'}
-              {step === 'reset' && 'Create a new password for your account'}
+              {step === 'login' && (currentLang === 'ar' ? 'أدخل بيانات الدخول للوصول إلى لوحة الإدارة' : 'Enter your credentials to access the admin panel')}
+              {step === 'otp' && t('login.enter_otp')}
+              {step === 'forgot' && (currentLang === 'ar' ? 'أدخل بريدك الإلكتروني لاستلام تعليمات استعادة كلمة المرور' : 'Enter your email to receive reset instructions')}
+              {step === 'reset' && (currentLang === 'ar' ? 'أنشئ كلمة مرور جديدة لحسابك' : 'Create a new password for your account')}
             </p>
           </div>
 

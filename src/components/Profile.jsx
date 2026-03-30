@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
 import { useAuth } from '../contexts/AuthContext';
 import { adminService } from '../services/adminService';
+import i18n from '../i18n/i18n.js';
 import wheel from '../assets/wheel.png';
 
 const Profile = () => {
@@ -20,6 +21,16 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [message, setMessage] = useState('');
+  const [currentLang, setCurrentLang] = useState(i18n.language || 'nl');
+
+  useEffect(() => {
+    const handleLanguageChanged = (lng) => setCurrentLang(lng);
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => i18n.off('languageChanged', handleLanguageChanged);
+  }, []);
+
+  // Translation helper
+  const t = (key) => i18n.t(key);
 
   useEffect(() => {
     fetchProfile();
@@ -102,7 +113,7 @@ const Profile = () => {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-[60vh]">
-          <div className="text-white text-xl">Loading Profile...</div>
+          <div className="text-white text-xl">{currentLang === 'ar' ? 'جاري تحميل الملف الشخصي...' : 'Profiel Laden...'}</div>
         </div>
       </AdminLayout>
     );
@@ -111,15 +122,17 @@ const Profile = () => {
   return (
     <AdminLayout>
       {/* Profile Content */}
-      <div className="p-8">
+      <div className={`p-8 ${currentLang === 'ar' ? 'text-right' : ''}`}>
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">Profile Settings</h2>
-          <p className="text-white/70">Manage your account information and security</p>
+          <h2 className="text-3xl font-bold text-white mb-2">{t('profile_admin.title')}</h2>
+          <p className="text-white/70">
+            {currentLang === 'ar' ? 'إدارة معلومات حسابك والأمان' : 'Beheer uw accountinformatie en beveiliging'}
+          </p>
         </div>
 
         {message && (
           <div className={`mb-6 p-4 rounded-xl ${
-            message.includes('success') ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+            message.includes('success') || message.includes('تم') ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
           }`}>
             {message}
           </div>
@@ -148,7 +161,9 @@ const Profile = () => {
               <h3 className="text-xl font-bold text-white mb-1">
                 {profile.firstName} {profile.lastName}
               </h3>
-              <p className="text-white/60 text-sm mb-4">Administrator</p>
+              <p className="text-white/60 text-sm mb-4">
+                {currentLang === 'ar' ? 'مدير' : 'Administrator'}
+              </p>
               
               <div className="space-y-2">
                 {/* <button className="w-full bg-white/10 text-white py-2 rounded-lg hover:bg-white/20 transition-all">
@@ -165,14 +180,18 @@ const Profile = () => {
           <div className="lg:col-span-2 space-y-8">
             {/* General Information */}
             <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 overflow-hidden">
-              <div className="p-6 border-b border-white/20">
-                <h3 className="text-xl font-bold text-white">General Information</h3>
+              <div className={`p-6 border-b border-white/20 ${currentLang === 'ar' ? 'text-right' : ''}`}>
+                <h3 className="text-xl font-bold text-white">
+                  {currentLang === 'ar' ? 'المعلومات العامة' : 'Algemene Informatie'}
+                </h3>
               </div>
               
-              <form onSubmit={handleProfileUpdate} className="p-6 space-y-6">
+              <form onSubmit={handleProfileUpdate} className={`p-6 space-y-6 ${currentLang === 'ar' ? 'text-right' : ''}`}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-semibold text-white/70 mb-2">First Name</label>
+                    <label className="block text-sm font-semibold text-white/70 mb-2">
+                      {currentLang === 'ar' ? 'الاسم الأول' : 'Voornaam'}
+                    </label>
                     <input
                       type="text"
                       className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:border-[#f64c01] focus:ring-2 focus:ring-[#f64c01]/20 outline-none"
@@ -182,7 +201,9 @@ const Profile = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-white/70 mb-2">Last Name</label>
+                    <label className="block text-sm font-semibold text-white/70 mb-2">
+                      {currentLang === 'ar' ? 'اسم العائلة' : 'Achternaam'}
+                    </label>
                     <input
                       type="text"
                       className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:border-[#f64c01] focus:ring-2 focus:ring-[#f64c01]/20 outline-none"
@@ -194,7 +215,9 @@ const Profile = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-semibold text-white/70 mb-2">Email Address</label>
+                  <label className="block text-sm font-semibold text-white/70 mb-2">
+                    {currentLang === 'ar' ? 'البريد الإلكتروني' : 'E-mailadres'}
+                  </label>
                   <input
                     type="email"
                     className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:border-[#f64c01] focus:ring-2 focus:ring-[#f64c01]/20 outline-none"
@@ -205,13 +228,16 @@ const Profile = () => {
                   />
                 </div>
                 
-                <div className="flex justify-end">
+                <div className={`flex ${currentLang === 'ar' ? 'justify-start' : 'justify-end'}`}>
                   <button
                     type="submit"
                     disabled={updating}
                     className="bg-gradient-to-r from-[#b03500] to-[#f64c01] text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-[#f64c01]/30 transition-all disabled:opacity-50"
                   >
-                    {updating ? 'Updating...' : 'Save Changes'}
+                    {updating 
+                      ? (currentLang === 'ar' ? 'جاري التحديث...' : 'Bezig met bijwerken...')
+                      : (currentLang === 'ar' ? 'حفظ التغييرات' : 'Wijzigingen Opslaan')
+                    }
                   </button>
                 </div>
               </form>
@@ -219,13 +245,17 @@ const Profile = () => {
 
             {/* Change Password */}
             <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 overflow-hidden">
-              <div className="p-6 border-b border-white/20">
-                <h3 className="text-xl font-bold text-white">Security Credentials</h3>
+              <div className={`p-6 border-b border-white/20 ${currentLang === 'ar' ? 'text-right' : ''}`}>
+                <h3 className="text-xl font-bold text-white">
+                  {currentLang === 'ar' ? 'بيانات الأمان' : 'Beveiligingsgegevens'}
+                </h3>
               </div>
               
-              <form onSubmit={handlePasswordChange} className="p-6 space-y-6">
+              <form onSubmit={handlePasswordChange} className={`p-6 space-y-6 ${currentLang === 'ar' ? 'text-right' : ''}`}>
                 <div>
-                  <label className="block text-sm font-semibold text-white/70 mb-2">Current Password</label>
+                  <label className="block text-sm font-semibold text-white/70 mb-2">
+                    {currentLang === 'ar' ? 'كلمة المرور الحالية' : 'Huidig Wachtwoord'}
+                  </label>
                   <input
                     type="password"
                     className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:border-[#f64c01] focus:ring-2 focus:ring-[#f64c01]/20 outline-none"
@@ -237,7 +267,9 @@ const Profile = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-semibold text-white/70 mb-2">New Password</label>
+                    <label className="block text-sm font-semibold text-white/70 mb-2">
+                      {currentLang === 'ar' ? 'كلمة المرور الجديدة' : 'Nieuw Wachtwoord'}
+                    </label>
                     <input
                       type="password"
                       className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:border-[#f64c01] focus:ring-2 focus:ring-[#f64c01]/20 outline-none"
@@ -248,7 +280,9 @@ const Profile = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-white/70 mb-2">Confirm New Password</label>
+                    <label className="block text-sm font-semibold text-white/70 mb-2">
+                      {currentLang === 'ar' ? 'تأكيد كلمة المرور الجديدة' : 'Bevestig Nieuw Wachtwoord'}
+                    </label>
                     <input
                       type="password"
                       className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:border-[#f64c01] focus:ring-2 focus:ring-[#f64c01]/20 outline-none"
@@ -260,13 +294,16 @@ const Profile = () => {
                   </div>
                 </div>
                 
-                <div className="flex justify-end">
+                <div className={`flex ${currentLang === 'ar' ? 'justify-start' : 'justify-end'}`}>
                   <button
                     type="submit"
                     disabled={updating}
                     className="bg-gradient-to-r from-[#b03500] to-[#f64c01] text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-[#f64c01]/30 transition-all disabled:opacity-50"
                   >
-                    {updating ? 'Updating...' : 'Change Password'}
+                    {updating 
+                      ? (currentLang === 'ar' ? 'جاري التحديث...' : 'Bezig met bijwerken...')
+                      : (currentLang === 'ar' ? 'تغيير كلمة المرور' : 'Wachtwoord Wijzigen')
+                    }
                   </button>
                 </div>
               </form>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
 import { adminService } from '../services/adminService';
+import i18n from '../i18n/i18n.js';
 import wheel from '../assets/wheel.png';
 import hero from '../assets/hero.png';
 import unnamed from '../assets/unnamed.png';
@@ -10,6 +11,7 @@ const Packages = () => {
   const [loading, setLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingPackage, setEditingPackage] = useState(null);
+  const [currentLang, setCurrentLang] = useState(i18n.language || 'nl');
   const [formData, setFormData] = useState({
     nameAr: '',
     nameNl: '',
@@ -22,6 +24,15 @@ const Packages = () => {
     durationNl: '',
     isActive: true,
   });
+
+  useEffect(() => {
+    const handleLanguageChanged = (lng) => setCurrentLang(lng);
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => i18n.off('languageChanged', handleLanguageChanged);
+  }, []);
+
+  // Translation helper
+  const t = (key) => i18n.t(key);
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -117,7 +128,7 @@ const Packages = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('هل أنت متأكد من حذف هذه الباقة؟')) {
+    if (window.confirm(currentLang === 'ar' ? 'هل أنت متأكد من حذف هذه الباقة؟' : 'Weet u zeker dat u dit pakket wilt verwijderen?')) {
       try {
         await adminService.deletePackage(id);
         setPackages(prev => prev.filter(pkg => pkg.id !== id));
@@ -160,7 +171,7 @@ const Packages = () => {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-[60vh]">
-          <div className="text-white text-xl">جاري تحميل الباقات...</div>
+          <div className="text-white text-xl">{currentLang === 'ar' ? 'جاري تحميل الباقات...' : 'Pakketten Laden...'}</div>
         </div>
       </AdminLayout>
     );
@@ -169,18 +180,20 @@ const Packages = () => {
   return (
     <AdminLayout>
       {/* Packages Content */}
-      <div className="p-8">
+      <div className={`p-8 ${currentLang === 'ar' ? 'text-right' : ''}`}>
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-end">
           <div>
-            <h2 className="text-2xl font-bold text-white mb-2 sm:text-3xl">إدارة الباقات</h2>
-            <p className="text-white/70 text-sm sm:text-base">إدارة باقات التدريب والأسعار</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">{t('packages_admin.title')}</h1>
+            <p className="text-white/70">
+              {currentLang === 'ar' ? 'إدارة باقات مدرسة القيادة' : 'Beheer uw rijschool pakketten'}
+            </p>
           </div>
-          <button 
+          <button
             onClick={() => setShowCreateModal(true)}
-            className="bg-gradient-to-r from-[#b03500] to-[#f64c01] text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-[#f64c01]/30 transition-all flex items-center gap-2 w-full sm:w-auto justify-center"
+            className="bg-[#f64c01] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#e54200] transition-all flex items-center justify-center gap-2"
           >
             <span className="material-symbols-outlined">add</span>
-            إضافة باقة جديدة
+            {currentLang === 'ar' ? 'إضافة باقة' : 'Pakket Toevoegen'}
           </button>
         </div>
 
@@ -201,30 +214,35 @@ const Packages = () => {
                 )}
 
                 {/* Package Info */}
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-bold text-white">{pkg.nameAr}</h3>
-                  <div className="flex items-center gap-2">
+                <div className={`flex justify-between items-start mb-4 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <h3 className="text-xl font-bold text-white">{currentLang === 'ar' ? pkg.nameAr : pkg.nameNl}</h3>
+                  <div className={`flex items-center gap-2 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                     <span className="text-2xl font-bold text-[#f64c01]">€{pkg.price}</span>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       pkg.isActive 
                         ? 'bg-green-500/20 text-green-400' 
                         : 'bg-red-500/20 text-red-400'
                     }`}>
-                      {pkg.isActive ? 'نشط' : 'غير نشط'}
+                      {pkg.isActive 
+                        ? (currentLang === 'ar' ? 'نشط' : 'Actief')
+                        : (currentLang === 'ar' ? 'غير نشط' : 'Inactief')
+                      }
                     </span>
                   </div>
                 </div>
-                <p className="text-white/70 text-sm mb-3">{pkg.descriptionAr}</p>
+                <p className="text-white/70 text-sm mb-3">{currentLang === 'ar' ? pkg.descriptionAr : pkg.descriptionNl}</p>
                 {pkg.durationAr && (
-                  <p className="text-white/60 text-sm mb-3">المدة: {pkg.durationAr}</p>
+                  <p className="text-white/60 text-sm mb-3">
+                    {currentLang === 'ar' ? 'المدة:' : 'Duur:'} {currentLang === 'ar' ? pkg.durationAr : pkg.durationNl}
+                  </p>
                 )}
                 {pkg.featuresAr && pkg.featuresAr.length > 0 && (
                   <div className="mb-4">
-                    <h4 className="text-white font-medium mb-2">المميزات:</h4>
+                    <h4 className="text-white font-medium mb-2">{currentLang === 'ar' ? 'المميزات:' : 'Functies:'}</h4>
                     <ul className="space-y-1">
-                      {pkg.featuresAr.map((feature, index) => (
-                        <li key={index} className="text-white/70 text-sm flex items-center">
-                          <span className="w-2 h-2 bg-[#f64c01] rounded-full mr-2"></span>
+                      {(currentLang === 'ar' ? pkg.featuresAr : pkg.featuresNl).map((feature, index) => (
+                        <li key={index} className={`text-white/70 text-sm flex items-center ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
+                          <span className={`w-2 h-2 bg-[#f64c01] rounded-full ${currentLang === 'ar' ? 'ml-2' : 'mr-2'}`}></span>
                           {feature}
                         </li>
                       ))}
@@ -233,12 +251,12 @@ const Packages = () => {
                 )}
 
                 {/* Actions */}
-                <div className="flex gap-2">
+                <div className={`flex gap-2 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                   <button
                     onClick={() => handleEdit(pkg)}
                     className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
                   >
-                    تعديل
+                    {currentLang === 'ar' ? 'تعديل' : 'Bewerken'}
                   </button>
                   <button
                     onClick={() => togglePackageStatus(pkg.id)}
@@ -248,13 +266,16 @@ const Packages = () => {
                         : 'bg-green-500 text-white hover:bg-green-600'
                   }`}
                   >
-                    {pkg.isActive ? 'إيقاف' : 'تفعيل'}
+                    {pkg.isActive 
+                      ? (currentLang === 'ar' ? 'إيقاف' : 'Deactiveren')
+                      : (currentLang === 'ar' ? 'تفعيل' : 'Activeren')
+                    }
                   </button>
                   <button
                     onClick={() => handleDelete(pkg.id)}
                     className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-colors"
                   >
-                    حذف
+                    {currentLang === 'ar' ? 'حذف' : 'Verwijderen'}
                   </button>
                 </div>
               </div>
@@ -265,18 +286,21 @@ const Packages = () => {
         {/* Create/Edit Modal */}
         {showCreateModal && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-[#1a3d5c] rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className={`bg-[#1a3d5c] rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto ${currentLang === 'ar' ? 'text-right' : ''}`}>
               <h2 className="text-xl font-bold text-white mb-4">
-                {editingPackage ? 'تعديل الباقة' : 'إضافة باقة جديدة'}
+                {editingPackage 
+                  ? (currentLang === 'ar' ? 'تعديل الباقة' : 'Pakket Bewerken')
+                  : (currentLang === 'ar' ? 'إضافة باقة جديدة' : 'Nieuw Pakket Toevoegen')
+                }
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Arabic Fields */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium text-white">البيانات العربية</h3>
+                  <h3 className="text-lg font-medium text-white">{currentLang === 'ar' ? 'البيانات العربية' : 'Arabische Gegevens'}</h3>
                   
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">اسم الباقة (عربي)</label>
+                    <label className="block text-white/70 text-sm mb-2">{currentLang === 'ar' ? 'اسم الباقة (عربي)' : 'Pakketnaam (Arabisch)'}</label>
                     <input
                       type="text"
                       name="nameAr"
@@ -288,7 +312,7 @@ const Packages = () => {
                   </div>
 
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">الوصف (عربي)</label>
+                    <label className="block text-white/70 text-sm mb-2">{currentLang === 'ar' ? 'الوصف (عربي)' : 'Beschrijving (Arabisch)'}</label>
                     <textarea
                       name="descriptionAr"
                       value={formData.descriptionAr}
@@ -299,7 +323,7 @@ const Packages = () => {
                   </div>
 
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">المدة (عربي)</label>
+                    <label className="block text-white/70 text-sm mb-2">{currentLang === 'ar' ? 'المدة (عربي)' : 'Duur (Arabisch)'}</label>
                     <input
                       type="text"
                       name="durationAr"
@@ -311,22 +335,22 @@ const Packages = () => {
                   </div>
 
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">المميزات (عربي)</label>
+                    <label className="block text-white/70 text-sm mb-2">{currentLang === 'ar' ? 'المميزات (عربي)' : 'Functies (Arabisch)'}</label>
                     {formData.featuresAr.map((feature, index) => (
-                      <div key={index} className="flex gap-2 mb-2">
+                      <div key={index} className={`flex gap-2 mb-2 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                         <input
                           type="text"
                           value={feature}
                           onChange={(e) => updateFeature('Ar', index, e.target.value)}
                           className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
-                          placeholder="أدخل ميزة"
+                          placeholder={currentLang === 'ar' ? 'أدخل ميزة' : 'Voeg een functie toe'}
                         />
                         <button
                           type="button"
                           onClick={() => removeFeature('Ar', index)}
                           className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600"
                         >
-                          حذف
+                          {currentLang === 'ar' ? 'حذف' : 'Verwijderen'}
                         </button>
                       </div>
                     ))}
@@ -335,17 +359,17 @@ const Packages = () => {
                       onClick={() => addFeature('Ar')}
                       className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
                     >
-                      إضافة ميزة
+                      {currentLang === 'ar' ? 'إضافة ميزة' : 'Functie toevoegen'}
                     </button>
                   </div>
                 </div>
 
                 {/* Dutch Fields */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium text-white">البيانات الهولندية</h3>
+                  <h3 className="text-lg font-medium text-white">{currentLang === 'ar' ? 'البيانات الهولندية' : 'Nederlandse Gegevens'}</h3>
                   
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">اسم الباقة (هولندي)</label>
+                    <label className="block text-white/70 text-sm mb-2">{currentLang === 'ar' ? 'اسم الباقة (هولندي)' : 'Pakketnaam (Nederlands)'}</label>
                     <input
                       type="text"
                       name="nameNl"
@@ -357,7 +381,7 @@ const Packages = () => {
                   </div>
 
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">الوصف (هولندي)</label>
+                    <label className="block text-white/70 text-sm mb-2">{currentLang === 'ar' ? 'الوصف (هولندي)' : 'Beschrijving (Nederlands)'}</label>
                     <textarea
                       name="descriptionNl"
                       value={formData.descriptionNl}
@@ -368,7 +392,7 @@ const Packages = () => {
                   </div>
 
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">المدة (هولندي)</label>
+                    <label className="block text-white/70 text-sm mb-2">{currentLang === 'ar' ? 'المدة (هولندي)' : 'Duur (Nederlands)'}</label>
                     <input
                       type="text"
                       name="durationNl"
@@ -380,9 +404,9 @@ const Packages = () => {
                   </div>
 
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">المميزات (هولندي)</label>
+                    <label className="block text-white/70 text-sm mb-2">{currentLang === 'ar' ? 'المميزات (هولندي)' : 'Functies (Nederlands)'}</label>
                     {formData.featuresNl.map((feature, index) => (
-                      <div key={index} className="flex gap-2 mb-2">
+                      <div key={index} className={`flex gap-2 mb-2 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                         <input
                           type="text"
                           value={feature}
@@ -395,7 +419,7 @@ const Packages = () => {
                           onClick={() => removeFeature('Nl', index)}
                           className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600"
                         >
-                          Verwijderen
+                          {currentLang === 'ar' ? 'حذف' : 'Verwijderen'}
                         </button>
                       </div>
                     ))}
@@ -404,7 +428,7 @@ const Packages = () => {
                       onClick={() => addFeature('Nl')}
                       className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
                     >
-                      Functie toevoegen
+                      {currentLang === 'ar' ? 'إضافة ميزة' : 'Functie toevoegen'}
                     </button>
                   </div>
                 </div>
@@ -412,7 +436,7 @@ const Packages = () => {
                 {/* Common Fields */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">السعر</label>
+                    <label className="block text-white/70 text-sm mb-2">{currentLang === 'ar' ? 'السعر' : 'Prijs'} (€)</label>
                     <input
                       type="number"
                       name="price"
@@ -425,32 +449,37 @@ const Packages = () => {
                     />
                   </div>
 
-                  <div className="flex items-center">
+                  <div className={`flex items-center ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                     <input
                       type="checkbox"
                       name="isActive"
                       checked={formData.isActive}
                       onChange={(e) => handleInputChange({ target: { name: 'isActive', value: e.target.checked } })}
-                      className="mr-2"
+                      className={currentLang === 'ar' ? 'ml-2' : 'mr-2'}
                     />
-                    <label className="text-white/70 text-sm">الباقة نشطة</label>
+                    <label className="text-white/70 text-sm">
+                      {currentLang === 'ar' ? 'الباقة نشطة' : 'Pakket is actief'}
+                    </label>
                   </div>
                 </div>
 
                 {/* Form Actions */}
-                <div className="flex gap-2 pt-4">
+                <div className={`flex gap-2 pt-4 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                   <button
                     type="button"
                     onClick={() => setShowCreateModal(false)}
                     className="flex-1 bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600"
                   >
-                    إلغاء
+                    {currentLang === 'ar' ? 'إلغاء' : 'Annuleren'}
                   </button>
                   <button
                     type="submit"
                     className="flex-1 bg-[#f64c01] text-white py-2 rounded-lg hover:bg-[#e54200]"
                   >
-                    {editingPackage ? 'تحديث الباقة' : 'إضافة الباقة'}
+                    {editingPackage 
+                      ? (currentLang === 'ar' ? 'تحديث الباقة' : 'Pakket Bijwerken')
+                      : (currentLang === 'ar' ? 'إضافة الباقة' : 'Pakket Toevoegen')
+                    }
                   </button>
                 </div>
               </form>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
 import { postService } from '../services/postService';
+import i18n from '../i18n/i18n.js';
 import wheel from '../assets/wheel.png';
 import hero from '../assets/hero.png';
 import unnamed from '../assets/unnamed.png';
@@ -11,6 +12,7 @@ const Posts = () => {
   const [error, setError] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
+  const [currentLang, setCurrentLang] = useState(i18n.language || 'nl');
   const [formData, setFormData] = useState({
     fullName: '',
     descriptionNl: '',
@@ -19,6 +21,15 @@ const Posts = () => {
     image: null,
     isTestimonial: false
   });
+
+  useEffect(() => {
+    const handleLanguageChanged = (lng) => setCurrentLang(lng);
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => i18n.off('languageChanged', handleLanguageChanged);
+  }, []);
+
+  // Translation helper
+  const t = (key) => i18n.t(key);
 
   useEffect(() => {
     fetchPosts();
@@ -76,13 +87,13 @@ const Posts = () => {
   };
 
   const deletePost = async (postId) => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
+    if (window.confirm(currentLang === 'ar' ? 'هل أنت متأكد من حذف هذا المنشور؟' : 'Weet u zeker dat u dit bericht wilt verwijderen?')) {
       try {
         await postService.deletePost(postId);
         await fetchPosts();
       } catch (error) {
         console.error('Error deleting post:', error);
-        alert(error.message || 'Failed to delete post');
+        alert(error.message || (currentLang === 'ar' ? 'فشل في حذف المنشور' : 'Failed to delete post'));
       }
     }
   };
@@ -137,7 +148,7 @@ const Posts = () => {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-[60vh]">
-          <div className="text-white text-xl">Posts Laden...</div>
+          <div className="text-white text-xl">{currentLang === 'ar' ? 'جاري تحميل المنشورات...' : 'Posts Laden...'}</div>
         </div>
       </AdminLayout>
     );
@@ -152,7 +163,7 @@ const Posts = () => {
             onClick={fetchPosts}
             className="bg-linear-to-r from-[#b03500] to-[#f64c01] text-white px-6 py-3 rounded-xl font-bold"
           >
-            Opnieuw Proberen
+            {currentLang === 'ar' ? 'إعادة المحاولة' : 'Opnieuw Proberen'}
           </button>
         </div>
       </AdminLayout>
@@ -162,18 +173,20 @@ const Posts = () => {
   return (
     <AdminLayout>
       {/* Posts Content */}
-      <div className="p-8">
+      <div className={`p-8 ${currentLang === 'ar' ? 'text-right' : ''}`}>
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-end">
           <div>
-            <h2 className="text-2xl font-bold text-white mb-2 sm:text-3xl">Post Beheer</h2>
-            <p className="text-white/70 text-sm sm:text-base">Beheer educatieve content en updates</p>
+            <h2 className="text-2xl font-bold text-white mb-2 sm:text-3xl">{t('posts_admin.title')}</h2>
+            <p className="text-white/70 text-sm sm:text-base">
+              {currentLang === 'ar' ? 'إدارة محتوى التوصيات والشهادات' : 'Beheer getuigenissen en testimonials'}
+            </p>
           </div>
           <button 
             onClick={() => setShowCreateModal(true)}
             className="bg-linear-to-r from-[#b03500] to-[#f64c01] text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-[#f64c01]/30 transition-all flex items-center gap-2 w-full sm:w-auto justify-center"
           >
             <span className="material-symbols-outlined">add</span>
-            Creëer Post
+            {currentLang === 'ar' ? 'إضافة توصية' : 'Testimonial Toevoegen'}
           </button>
         </div>
 
@@ -193,15 +206,15 @@ const Posts = () => {
               </div>
               
               <div className="p-6">
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex items-center gap-2">
+                <div className={`flex justify-between items-start mb-3 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center gap-2 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                     <span className="px-2 py-1 rounded text-xs font-bold bg-blue-500/20 text-blue-400">
-                      Post
+                      {currentLang === 'ar' ? 'توصية' : 'Testimonial'}
                     </span>
                     {post.isTestimonial && (
                       <span className="px-2 py-1 rounded text-xs font-bold bg-green-500/20 text-green-400 flex items-center gap-1">
                         <span className="material-symbols-outlined text-xs">star</span>
-                        Testimonial
+                        {currentLang === 'ar' ? 'مميز' : 'Uitgelicht'}
                       </span>
                     )}
                   </div>
@@ -215,17 +228,17 @@ const Posts = () => {
                 </h3>
                 
                 <p className="text-white/70 text-sm mb-4 line-clamp-3">
-                  {post.descriptionNl || post.descriptionAr}
+                  {currentLang === 'ar' ? post.descriptionAr : post.descriptionNl}
                 </p>
                 
-                <div className="flex items-center justify-between text-white/50 text-xs mb-4">
-                  <span className="flex items-center gap-1">
+                <div className={`flex items-center justify-between text-white/50 text-xs mb-4 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <span className={`flex items-center gap-1 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                     <span className="material-symbols-outlined text-sm">calendar_today</span>
-                    {new Date(post.timestamp).toLocaleDateString()}
+                    {new Date(post.timestamp).toLocaleDateString(currentLang === 'ar' ? 'ar-SA' : 'nl-NL')}
                   </span>
                 </div>
                 
-                <div className="flex gap-2">
+                <div className={`flex gap-2 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                   <button 
                     onClick={() => {
                       setEditingPost(post);
@@ -242,7 +255,7 @@ const Posts = () => {
                     className="flex-1 bg-white/10 text-white py-2 rounded-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2"
                   >
                     <span className="material-symbols-outlined">edit</span>
-                    Bewerken
+                    {currentLang === 'ar' ? 'تعديل' : 'Bewerken'}
                   </button>
                   <button 
                     onClick={() => deletePost(post.id)}
@@ -258,12 +271,14 @@ const Posts = () => {
           {Array.isArray(posts) && posts.length === 0 && (
             <div className="col-span-full text-center py-12">
               <span className="material-symbols-outlined text-6xl text-white/20 mb-4">article</span>
-              <p className="text-white/60 text-xl mb-4">Nog geen posts</p>
+              <p className="text-white/60 text-xl mb-4">
+                {currentLang === 'ar' ? 'لا توجد توصيات بعد' : 'Nog geen testimonials'}
+              </p>
               <button 
                 onClick={() => setShowCreateModal(true)}
                 className="bg-linear-to-r from-[#b03500] to-[#f64c01] text-white px-6 py-3 rounded-xl font-bold"
               >
-                Creëer Eerste Post
+                {currentLang === 'ar' ? 'إضافة أول توصية' : 'Eerste Testimonial Toevoegen'}
               </button>
             </div>
           )}
@@ -273,14 +288,19 @@ const Posts = () => {
       {/* Create/Edit Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className={`bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto ${currentLang === 'ar' ? 'text-right' : ''}`}>
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              {editingPost ? 'Bewerk Post' : 'Creëer Post'}
+              {editingPost 
+                ? (currentLang === 'ar' ? 'تعديل التوصية' : 'Testimonial Bewerken')
+                : (currentLang === 'ar' ? 'إضافة توصية' : 'Testimonial Toevoegen')
+              }
             </h3>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Post Titel</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  {currentLang === 'ar' ? 'الاسم الكامل' : 'Volledige Naam'}
+                </label>
                 <input
                   type="text"
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-[#b03500] focus:ring-2 focus:ring-[#b03500]/20 outline-none"
@@ -291,7 +311,9 @@ const Posts = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Beschrijving (Nederlands)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  {currentLang === 'ar' ? 'الوصف (الهولندية)' : 'Beschrijving (Nederlands)'}
+                </label>
                 <textarea
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-[#b03500] focus:ring-2 focus:ring-[#b03500]/20 outline-none"
                   rows={4}
@@ -302,7 +324,9 @@ const Posts = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Beschrijving (Arabisch)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  {currentLang === 'ar' ? 'الوصف (العربية)' : 'Beschrijving (Arabisch)'}
+                </label>
                 <textarea
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-[#b03500] focus:ring-2 focus:ring-[#b03500]/20 outline-none"
                   rows={4}
@@ -312,7 +336,9 @@ const Posts = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Afbeelding</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  {currentLang === 'ar' ? 'الصورة' : 'Afbeelding'}
+                </label>
                 <input
                   type="file"
                   accept="image/*"
@@ -321,42 +347,47 @@ const Posts = () => {
                 />
                 {formData.image && (
                   <p className="mt-2 text-sm text-gray-600">
-                    Geselecteerd: {formData.image.name}
+                    {currentLang === 'ar' ? 'تم الاختيار:' : 'Geselecteerd:'} {formData.image.name}
                   </p>
                 )}
               </div>
               
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Beoordeling</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  {currentLang === 'ar' ? 'التقييم' : 'Beoordeling'}
+                </label>
                 <select
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-[#b03500] focus:ring-2 focus:ring-[#b03500]/20 outline-none"
                   value={formData.stars}
                   onChange={(e) => setFormData({...formData, stars: parseInt(e.target.value)})}
                 >
-                  <option value={5}>5 Sterren</option>
-                  <option value={4}>4 Sterren</option>
-                  <option value={3}>3 Sterren</option>
-                  <option value={2}>2 Sterren</option>
-                  <option value={1}>1 Ster</option>
+                  <option value={5}>5 {currentLang === 'ar' ? 'نجوم' : 'Sterren'}</option>
+                  <option value={4}>4 {currentLang === 'ar' ? 'نجوم' : 'Sterren'}</option>
+                  <option value={3}>3 {currentLang === 'ar' ? 'نجوم' : 'Sterren'}</option>
+                  <option value={2}>2 {currentLang === 'ar' ? 'نجوم' : 'Sterren'}</option>
+                  <option value={1}>1 {currentLang === 'ar' ? 'نجمة' : 'Ster'}</option>
                 </select>
               </div>
               
               <div>
-                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <label className={`flex items-center gap-2 text-sm font-semibold text-gray-700 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                   <input
                     type="checkbox"
                     checked={formData.isTestimonial}
                     onChange={(e) => setFormData({...formData, isTestimonial: e.target.checked})}
                     className="rounded border-gray-300 text-[#b03500] focus:ring-[#b03500]"
                   />
-                  Toon in Testimonials (Homepage)
+                  {currentLang === 'ar' ? 'عرض في التوصيات (الصفحة الرئيسية)' : 'Toon in Testimonials (Homepage)'}
                 </label>
                 <p className="mt-1 text-xs text-gray-500">
-                  Selecteer deze post om weer te geven in de testimonials sectie op de homepage
+                  {currentLang === 'ar' 
+                    ? 'حدد هذا الخيار لعرض التوصية في قسم الشهادات على الصفحة الرئيسية'
+                    : 'Selecteer dit om weer te geven in de testimonials sectie op de homepage'
+                  }
                 </p>
               </div>
               
-              <div className="flex gap-4">
+              <div className={`flex gap-4 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
                 <button
                   type="button"
                   onClick={() => {
@@ -373,13 +404,16 @@ const Posts = () => {
                   }}
                   className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition-all"
                 >
-                  Annuleer
+                  {currentLang === 'ar' ? 'إلغاء' : 'Annuleren'}
                 </button>
                 <button
                   type="submit"
                   className="flex-1 bg-linear-to-r from-[#b03500] to-[#f64c01] text-white py-3 rounded-xl font-bold shadow-lg hover:shadow-[#f64c01]/30 transition-all"
                 >
-                  {editingPost ? 'Update Post' : 'Creëer Post'}
+                  {editingPost 
+                    ? (currentLang === 'ar' ? 'تحديث التوصية' : 'Testimonial Bijwerken')
+                    : (currentLang === 'ar' ? 'إضافة التوصية' : 'Testimonial Toevoegen')
+                  }
                 </button>
               </div>
             </form>
