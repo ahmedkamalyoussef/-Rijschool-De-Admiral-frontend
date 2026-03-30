@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
+import { useAuth } from '../contexts/AuthContext';
 import { adminService } from '../services/adminService';
 import wheel from '../assets/wheel.png';
 
 const Profile = () => {
+  const { user, updateProfile } = useAuth();
   const [profile, setProfile] = useState({
     firstName: '',
     lastName: '',
@@ -42,15 +44,12 @@ const Profile = () => {
     setMessage('');
 
     try {
-      const response = await adminService.updateProfile(profile);
-      if (response.data.status) {
-        setMessage('Profile updated successfully!');
-      } else {
-        setMessage(response.data.message || 'Error updating profile');
-      }
+      // Use updateProfile from AuthContext to update global user state
+      await updateProfile(profile.firstName, profile.lastName);
+      setMessage('Profile updated successfully!');
     } catch (error) {
       console.error('Error updating profile:', error);
-      setMessage('Error updating profile');
+      setMessage(error.message || 'Error updating profile');
     } finally {
       setUpdating(false);
     }

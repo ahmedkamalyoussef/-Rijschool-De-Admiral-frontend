@@ -8,6 +8,7 @@ import WelcomeFeatures from './components/WelcomeFeatures';
 import AboutUs from './components/AboutUs';
 import Pricing from './components/Pricing';
 import Testimonials from './components/Testimonials';
+import SocialMediaQR from './components/SocialMediaQR';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Login from './components/Login';
@@ -60,6 +61,7 @@ function App() {
               <AboutUs />
               <Pricing />
               <Testimonials />
+              <SocialMediaQR />
               <Contact />
               <Footer />
             </div>

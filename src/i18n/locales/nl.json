@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "Over Ons",
+    "pricing": "Prijzen",
+    "graduates": "Afgestudeerden",
+    "contact": "Contact",
+    "enroll": "Direct Inschrijven"
+  },
+  "hero": {
+    "title": "Leer Rijden met Passie",
+    "subtitle": "Professionele rijlessen in Amsterdam en omstreken. Persoonlijke begeleiding voor elke student.",
+    "cta": "Start Nu"
+  },
+  "language": {
+    "switch": "العربية",
+    "current": "NL"
+  },
+  "about": {
+    "title": "Waarom Kiezen voor De Admiraal?",
+    "subtitle": "Wij bieden professionele rijlessen met persoonlijke aandacht",
+    "experience": "Jarenlange ervaring in rijles geven",
+    "flexible": "Flexibele lestijden die bij jou passen",
+    "high_pass_rate": "Hoge slagingspercentage",
+    "personal": "Persoonlijke begeleiding op maat",
+    "modern": "Moderne lesauto's met de nieuwste technologie"
+  },
+  "pricing": {
+    "title": "Transparante Pakketten",
+    "subtitle": "Kies het pakket dat het beste bij jouw leerstijl en ervaring past. Geen verborgen kosten.",
+    "choose_package": "Kies {packageName}",
+    "no_packages": "Er zijn op dit moment geen pakketten beschikbaar.",
+    "try_later": "Probeer het later opnieuw of neem contact met ons op."
+  },
+  "testimonials": {
+    "title": "Onze Trots: Recente Geslaagden",
+    "subtitle": "Wat onze studenten over ons zeggen",
+    "no_testimonials": "Er zijn op dit moment geen getuigenissen beschikbaar.",
+    "come_back": "Kom binnenkort terug voor ervaringen van onze geslaagde studenten."
+  },
+  "contact": {
+    "title": "Neem Contact Op",
+    "subtitle": "Heb je vragen? We helpen je graag!",
+    "name": "Naam",
+    "email": "Email",
+    "phone": "Telefoon",
+    "subject": "Onderwerp",
+    "message": "Bericht",
+    "send": "Verstuur Bericht",
+    "sending": "Verzenden...",
+    "success": "Uw bericht is succesvol verzonden! We nemen zo snel mogelijk contact met u op.",
+    "error": "Er is een fout opgetreden. Probeer het later opnieuw.",
+    "contact_info": "Contactgegevens",
+    "address": "Van der Helststraat 123, 1073 AZ Amsterdam",
+    "opening_hours": "Openingstijden",
+    "weekdays": "Ma-Vr: 9:00 - 18:00",
+    "saturday": "Za: 10:00 - 16:00"
+  },
+  "footer": {
+    "description": "Uw partner in veilige kilometers en professionele begeleiding op de weg door heel Amsterdam en omstreken.",
+    "quick_links": "Quick Links",
+    "legal_info": "Legale Informatie",
+    "follow_us": "Volg Ons",
+    "rights": "Alle rechten voorbehouden"
+  },
+  "social": {
+    "title": "Volg Ons op Social Media",
+    "subtitle": "Scan de QR-codes of klik op de links om ons te volgen voor de laatste updates, foto's en nieuws!",
+    "scan_now": "Scan nu!",
+    "scan_or_click": "Scan de QR-code of klik hier",
+    "stay_connected": "Blijf Verbonden!",
+    "stay_connected_desc": "Volg ons op social media voor de laatste nieuwtjes over onze rijschool, succesverhalen van studenten, handige rijtips en speciale aanbiedingen."
+  }
+}

@@ -38,6 +38,18 @@ export const fetchPostById = createAsyncThunk(
   }
 );
 
+export const fetchTestimonials = createAsyncThunk(
+  'posts/fetchTestimonials',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await postService.getTestimonials();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const fetchPostsByRating = createAsyncThunk(
   'posts/fetchByRating',
   async (stars, { rejectWithValue }) => {
@@ -89,6 +101,7 @@ export const deletePost = createAsyncThunk(
 const initialState = {
   posts: [],
   publicPosts: [],
+  testimonials: [],
   currentPost: null,
   isLoading: false,
   error: null,
@@ -114,7 +127,7 @@ const postSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.posts = action.payload.posts;
+        state.posts = action.payload.data;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.isLoading = false;
@@ -126,7 +139,7 @@ const postSlice = createSlice({
       })
       .addCase(fetchPublicPosts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.publicPosts = action.payload.posts;
+        state.publicPosts = action.payload.data;
       })
       .addCase(fetchPublicPosts.rejected, (state, action) => {
         state.isLoading = false;
@@ -138,7 +151,7 @@ const postSlice = createSlice({
       })
       .addCase(fetchPostById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentPost = action.payload.post;
+        state.currentPost = action.payload.data;
       })
       .addCase(fetchPostById.rejected, (state, action) => {
         state.isLoading = false;
@@ -146,7 +159,19 @@ const postSlice = createSlice({
       })
       // Fetch posts by rating
       .addCase(fetchPostsByRating.fulfilled, (state, action) => {
-        state.publicPosts = action.payload.posts;
+        state.publicPosts = action.payload.data;
+      })
+      // Fetch testimonials
+      .addCase(fetchTestimonials.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchTestimonials.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.testimonials = action.payload.data;
+      })
+      .addCase(fetchTestimonials.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       })
       // Create post
       .addCase(createPost.pending, (state) => {
@@ -155,7 +180,7 @@ const postSlice = createSlice({
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.posts.push(action.payload.post);
+        state.posts.push(action.payload.data);
       })
       .addCase(createPost.rejected, (state, action) => {
         state.isLoading = false;
@@ -167,9 +192,9 @@ const postSlice = createSlice({
       })
       .addCase(updatePost.fulfilled, (state, action) => {
         state.isLoading = false;
-        const index = state.posts.findIndex(post => post.id === action.payload.post.id);
+        const index = state.posts.findIndex(post => post.id === action.payload.data.id);
         if (index !== -1) {
-          state.posts[index] = action.payload.post;
+          state.posts[index] = action.payload.data;
         }
       })
       .addCase(updatePost.rejected, (state, action) => {

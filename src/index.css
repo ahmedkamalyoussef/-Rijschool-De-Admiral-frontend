@@ -1,1 +1,18 @@
 /* This file can be used for additional global styles if needed */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #121212;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background: #f17014;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #f17014;
+}

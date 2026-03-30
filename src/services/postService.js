@@ -3,6 +3,7 @@ import api from './api';
 export const postService = {
   // Public endpoints
   getPublicPosts: () => api.get('/api/v1/posts/public'),
+  getTestimonials: () => api.get('/api/v1/posts/testimonials'),
   getPostById: (id) => api.get(`/api/v1/posts/${id}`),
   getPostsByRating: (stars) => api.get(`/api/v1/posts/rating/${stars}`),
   
@@ -15,6 +16,7 @@ export const postService = {
     formData.append('stars', postData.stars || postData.rating);
     formData.append('descriptionAr', postData.descriptionAr || postData.content || '');
     formData.append('descriptionNl', postData.descriptionNl || postData.content || '');
+    formData.append('isTestimonial', postData.isTestimonial || false);
     
     if (postData.image) {
       formData.append('image', postData.image);
@@ -33,6 +35,7 @@ export const postService = {
     formData.append('stars', postData.stars || postData.rating);
     formData.append('descriptionAr', postData.descriptionAr || postData.content || '');
     formData.append('descriptionNl', postData.descriptionNl || postData.content || '');
+    formData.append('isTestimonial', postData.isTestimonial !== undefined ? postData.isTestimonial : false);
     
     if (postData.image) {
       formData.append('image', postData.image);

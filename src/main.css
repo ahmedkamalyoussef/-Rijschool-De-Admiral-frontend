@@ -27,3 +27,45 @@ h1, h2, h3, h4, h5, h6 {
 .tonal-gradient {
   background: linear-gradient(135deg, #ab3500 0%, #9b4500 100%);
 }
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #ffffff17;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background: #f17014;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #f17014;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+    text-align: right;
+}
+
+[dir="rtl"] .glass-nav {
+    direction: rtl;
+}
+
+/* RTL Utility Classes */
+.rtl {
+    direction: rtl;
+}
+
+.rtl .font-headline {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Mobile menu RTL support */
+@media (max-width: 768px) {
+    [dir="rtl"] nav .max-w-7xl {
+        direction: rtl;
+    }
+}

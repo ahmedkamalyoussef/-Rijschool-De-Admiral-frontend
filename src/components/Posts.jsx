@@ -16,7 +16,8 @@ const Posts = () => {
     descriptionNl: '',
     descriptionAr: '',
     stars: 5,
-    image: null
+    image: null,
+    isTestimonial: false
   });
 
   useEffect(() => {
@@ -65,7 +66,8 @@ const Posts = () => {
         descriptionNl: '',
         descriptionAr: '',
         stars: 5,
-        image: null
+        image: null,
+        isTestimonial: false
       });
     } catch (error) {
       console.error('Error saving post:', error);
@@ -196,6 +198,12 @@ const Posts = () => {
                     <span className="px-2 py-1 rounded text-xs font-bold bg-blue-500/20 text-blue-400">
                       Post
                     </span>
+                    {post.isTestimonial && (
+                      <span className="px-2 py-1 rounded text-xs font-bold bg-green-500/20 text-green-400 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-xs">star</span>
+                        Testimonial
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-1">
                     {renderStars(post.stars)}
@@ -226,7 +234,8 @@ const Posts = () => {
                         descriptionNl: post.descriptionNl || '',
                         descriptionAr: post.descriptionAr || '',
                         stars: post.stars,
-                        image: null
+                        image: null,
+                        isTestimonial: post.isTestimonial || false
                       });
                       setShowCreateModal(true);
                     }}
@@ -332,6 +341,21 @@ const Posts = () => {
                 </select>
               </div>
               
+              <div>
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={formData.isTestimonial}
+                    onChange={(e) => setFormData({...formData, isTestimonial: e.target.checked})}
+                    className="rounded border-gray-300 text-[#b03500] focus:ring-[#b03500]"
+                  />
+                  Toon in Testimonials (Homepage)
+                </label>
+                <p className="mt-1 text-xs text-gray-500">
+                  Selecteer deze post om weer te geven in de testimonials sectie op de homepage
+                </p>
+              </div>
+              
               <div className="flex gap-4">
                 <button
                   type="button"
@@ -343,7 +367,8 @@ const Posts = () => {
                       descriptionNl: '',
                       descriptionAr: '',
                       stars: 5,
-                      image: null
+                      image: null,
+                      isTestimonial: false
                     });
                   }}
                   className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition-all"

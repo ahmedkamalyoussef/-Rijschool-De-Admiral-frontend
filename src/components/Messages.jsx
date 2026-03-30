@@ -51,20 +51,22 @@ const Messages = () => {
       setContacts(prev => prev.map(contact => {
         if (contact.id === contactId) {
           const updatedContact = { ...contact, status };
-          
-          // Update stats
-          const oldStatus = contact.status || 'new';
-          setStats(currentStats => {
-            const newStats = { ...currentStats };
-            newStats[oldStatus] = Math.max(0, (newStats[oldStatus] || 0) - 1);
-            newStats[status] = (newStats[status] || 0) + 1;
-            return newStats;
-          });
-          
           return updatedContact;
         }
         return contact;
       }));
+      
+      // Recalculate stats from updated contacts
+      setContacts(currentContacts => {
+        const newStats = {
+          total: currentContacts.length,
+          unread: currentContacts.filter(c => c.status === 'new' || !c.status).length,
+          read: currentContacts.filter(c => c.status === 'read').length,
+          replied: currentContacts.filter(c => c.status === 'replied').length
+        };
+        setStats(newStats);
+        return currentContacts;
+      });
     } catch (error) {
       console.error('Error updating contact status:', error);
     }
@@ -126,14 +128,14 @@ const Messages = () => {
   return (
     <AdminLayout>
       {/* Messages Content */}
-      <div className="p-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white mb-2 sm:text-3xl">Berichten</h2>
+      <div className="p-3 sm:p-4 md:p-6 lg:p-8 w-full max-w-full overflow-x-hidden">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">Berichten</h2>
           <p className="text-white/70 text-sm sm:text-base">Beheer contactinformatie en communicatie</p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
             <h3 className="text-white/70 text-sm font-medium mb-2">Totaal Berichten</h3>
             <p className="text-2xl font-bold text-white">{stats.total}</p>
@@ -199,9 +201,9 @@ const Messages = () => {
         </div>
 
         {/* Messages List */}
-        <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
-          <div className="p-6 border-b border-white/20">
-            <h3 className="text-xl font-bold text-white">
+        <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 overflow-hidden">
+          <div className="p-4 sm:p-5 lg:p-6 border-b border-white/20">
+            <h3 className="text-lg sm:text-xl font-bold text-white">
               {filterStatus === 'all' ? 'Alle Berichten' : `${filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} Berichten`}
             </h3>
           </div>
@@ -210,30 +212,30 @@ const Messages = () => {
             {filteredContacts.map((contact) => (
               <div 
                 key={contact.id} 
-                className="p-6 hover:bg-white/5 transition-all cursor-pointer"
+                className="p-4 sm:p-5 lg:p-6 hover:bg-white/5 transition-all cursor-pointer"
                 onClick={() => setSelectedContact(contact)}
               >
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 rounded-full bg-[#f64c01] flex items-center justify-center shrink-0">
-                      <span className="text-white font-bold text-lg">
+                <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-3 lg:gap-4">
+                  <div className="flex gap-3 sm:gap-4 min-w-0 flex-1">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-full bg-[#f64c01] flex items-center justify-center shrink-0">
+                      <span className="text-white font-bold text-base sm:text-lg">
                         {contact.name?.charAt(0) || 'U'}
                       </span>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-1">
-                        <h4 className="text-white font-bold truncate">{contact.name}</h4>
-                        <span className={`px-2 py-1 rounded text-xs font-bold shrink-0 ${getStatusColor(contact.status)}`}>
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 lg:gap-3 mb-1">
+                        <h4 className="text-white font-bold text-sm sm:text-base truncate">{contact.name}</h4>
+                        <span className={`px-2 py-0.5 sm:py-1 rounded text-xs font-bold shrink-0 w-fit ${getStatusColor(contact.status)}`}>
                           {contact.status || 'new'}
                         </span>
                       </div>
-                      <p className="text-white/80 font-medium mb-1 truncate">{contact.subject}</p>
-                      <p className="text-white/60 text-sm truncate">{contact.email}</p>
-                      <p className="text-white/60 text-sm mt-2 line-clamp-2">{contact.message}</p>
+                      <p className="text-white/80 font-medium text-sm mb-1 truncate">{contact.subject}</p>
+                      <p className="text-white/60 text-xs sm:text-sm truncate">{contact.email}</p>
+                      <p className="text-white/60 text-xs sm:text-sm mt-2 line-clamp-2 break-words">{contact.message}</p>
                     </div>
                   </div>
                   
-                  <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 shrink-0">
+                  <div className="flex flex-row lg:flex-col items-center lg:items-end gap-2 shrink-0 mt-2 lg:mt-0">
                     <span className="text-white/40 text-xs whitespace-nowrap">
                       {new Date(contact.createdAt).toLocaleDateString()}
                     </span>
@@ -278,30 +280,30 @@ const Messages = () => {
       {/* Message Modal */}
       {selectedContact && (
         <div 
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8"
           onClick={() => setSelectedContact(null)}
         >
           <div 
-            className="bg-gradient-to-br from-[#091d2e] via-[#0f2942] to-[#1a3d5c] rounded-xl border border-white/20 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-gradient-to-br from-[#091d2e] via-[#0f2942] to-[#1a3d5c] rounded-xl border border-white/20 w-full max-w-full sm:max-w-2xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto overscroll-contain"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6 border-b border-white/20">
+            <div className="p-4 sm:p-6 border-b border-white/20">
               <div className="flex justify-between items-start gap-4">
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-full bg-[#f64c01] flex items-center justify-center shrink-0">
-                    <span className="text-white font-bold text-lg">
+                <div className="flex gap-3 sm:gap-4 min-w-0 flex-1">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#f64c01] flex items-center justify-center shrink-0">
+                    <span className="text-white font-bold text-sm sm:text-lg">
                       {selectedContact.name?.charAt(0) || 'U'}
                     </span>
                   </div>
-                  <div>
-                    <div className="flex items-center gap-3 mb-1">
-                      <h3 className="text-xl font-bold text-white">{selectedContact.name}</h3>
-                      <span className={`px-2 py-1 rounded text-xs font-bold ${getStatusColor(selectedContact.status)}`}>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-1">
+                      <h3 className="text-lg sm:text-xl font-bold text-white truncate">{selectedContact.name}</h3>
+                      <span className={`px-2 py-1 rounded text-xs font-bold shrink-0 ${getStatusColor(selectedContact.status)}`}>
                         {selectedContact.status || 'new'}
                       </span>
                     </div>
-                    <p className="text-white/80 font-medium">{selectedContact.subject}</p>
-                    <p className="text-white/60 text-sm">{selectedContact.email}</p>
+                    <p className="text-white/80 font-medium text-sm sm:text-base truncate">{selectedContact.subject}</p>
+                    <p className="text-white/60 text-xs sm:text-sm truncate">{selectedContact.email}</p>
                   </div>
                 </div>
                 <button
@@ -313,11 +315,11 @@ const Messages = () => {
               </div>
             </div>
             
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="mb-6">
                 <h4 className="text-white/70 text-sm font-medium mb-2">Bericht:</h4>
-                <div className="bg-white/5 rounded-lg p-4">
-                  <p className="text-white/80 leading-relaxed whitespace-pre-wrap">{selectedContact.message}</p>
+                <div className="bg-white/5 rounded-lg p-3 sm:p-4 overflow-hidden max-w-full">
+                  <p className="text-white/80 leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere text-sm sm:text-base">{selectedContact.message}</p>
                 </div>
               </div>
               

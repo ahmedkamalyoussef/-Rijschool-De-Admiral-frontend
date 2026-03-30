@@ -114,7 +114,7 @@ const packageSlice = createSlice({
       })
       .addCase(fetchPackages.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.packages = action.payload.packages;
+        state.packages = action.payload.data;
       })
       .addCase(fetchPackages.rejected, (state, action) => {
         state.isLoading = false;
@@ -126,7 +126,7 @@ const packageSlice = createSlice({
       })
       .addCase(fetchPublicPackages.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.publicPackages = action.payload.packages;
+        state.publicPackages = action.payload.data;
       })
       .addCase(fetchPublicPackages.rejected, (state, action) => {
         state.isLoading = false;
