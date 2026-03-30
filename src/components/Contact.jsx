@@ -4,28 +4,28 @@ const Contact = () => {
   return (
     <section className="py-16 sm:py-20 lg:py-24 bg-white" id="contact">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch">
           {/* Contact Form */}
-          <div className="w-full p-6 sm:p-8 lg:p-12">
+          <div className="w-full p-6 sm:p-8 lg:p-12 bg-[#f8fafc] rounded-l-3xl shadow-xl">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-headline font-bold text-[#091d2e] mb-6 sm:mb-8 tracking-tight">Neem Contact Op</h2>
             <form className="space-y-4 sm:space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-xs sm:text-sm font-label uppercase tracking-widest text-gray-400 font-bold mb-2">Naam</label>
-                  <input className="w-full bg-[#f1f6ff] border-0 rounded-xl p-3 sm:p-4 focus:ring-2 focus:ring-[#b03500]/40 transition-all text-[#091d2e] text-sm sm:text-base" placeholder="Uw naam" type="text"/>
+                  <input className="w-full bg-white border border-gray-200 rounded-xl p-3 sm:p-4 focus:ring-2 focus:ring-[#b03500]/40 focus:border-[#b03500] transition-all text-[#091d2e] text-sm sm:text-base shadow-sm" placeholder="Uw naam" type="text"/>
                 </div>
                 <div>
                   <label className="block text-xs sm:text-sm font-label uppercase tracking-widest text-gray-400 font-bold mb-2">Email</label>
-                  <input className="w-full bg-[#f1f6ff] border-0 rounded-xl p-3 sm:p-4 focus:ring-2 focus:ring-[#b03500]/40 transition-all text-[#091d2e] text-sm sm:text-base" placeholder="Uw email" type="email"/>
+                  <input className="w-full bg-white border border-gray-200 rounded-xl p-3 sm:p-4 focus:ring-2 focus:ring-[#b03500]/40 focus:border-[#b03500] transition-all text-[#091d2e] text-sm sm:text-base shadow-sm" placeholder="Uw email" type="email"/>
                 </div>
               </div>
               <div>
                 <label className="block text-xs sm:text-sm font-label uppercase tracking-widest text-gray-400 font-bold mb-2">Telefoon</label>
-                <input className="w-full bg-[#f1f6ff] border-0 rounded-xl p-3 sm:p-4 focus:ring-2 focus:ring-[#b03500]/40 transition-all text-[#091d2e] text-sm sm:text-base" placeholder="Telefoonnummer" type="tel"/>
+                <input className="w-full bg-white border border-gray-200 rounded-xl p-3 sm:p-4 focus:ring-2 focus:ring-[#b03500]/40 focus:border-[#b03500] transition-all text-[#091d2e] text-sm sm:text-base shadow-sm" placeholder="Telefoonnummer" type="tel"/>
               </div>
               <div>
                 <label className="block text-xs sm:text-sm font-label uppercase tracking-widest text-gray-400 font-bold mb-2">Bericht</label>
-                <textarea className="w-full bg-[#f1f6ff] border-0 rounded-xl p-3 sm:p-4 focus:ring-2 focus:ring-[#b03500]/40 transition-all text-[#091d2e] text-sm sm:text-base" placeholder="Uw bericht..." rows="4"></textarea>
+                <textarea className="w-full bg-white border border-gray-200 rounded-xl p-3 sm:p-4 focus:ring-2 focus:ring-[#b03500]/40 focus:border-[#b03500] transition-all text-[#091d2e] text-sm sm:text-base shadow-sm" placeholder="Uw bericht..." rows="4"></textarea>
               </div>
               <button className="bg-[#b03500] text-white w-full py-3 sm:py-4 rounded-xl font-headline font-bold text-base sm:text-xl shadow-lg shadow-[#b03500]/20 hover:opacity-95 active:scale-[0.98] transition-all">
                 Verstuur Bericht
@@ -34,7 +34,7 @@ const Contact = () => {
           </div>
           
           {/* Contact Info */}
-          <div className="w-full bg-[#091d2e] p-6 sm:p-8 lg:p-12 text-white flex flex-col rounded-3xl">
+          <div className="w-full bg-[#091d2e] p-6 sm:p-8 lg:p-12 text-white flex flex-col rounded-r-3xl">
             <div>
               <h3 className="text-2xl sm:text-3xl font-headline font-bold mb-8 sm:mb-10 text-[#f64c01]">Contactgegevens</h3>
               <div className="space-y-6 sm:space-y-8">
