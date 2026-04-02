@@ -64,7 +64,7 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch ${currentLang === 'ar' ? 'direction-rtl' : ''}`}>
           {/* Contact Form */}
-          <div className="w-full p-6 sm:p-8 lg:p-12 bg-[#f8fafc] rounded-l-3xl shadow-xl">
+          <div className={`w-full p-6 sm:p-8 lg:p-12 bg-[#f8fafc] ${currentLang === 'ar' ? ' rounded-r-3xl' : ' rounded-l-3xl'} shadow-xl`}>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-headline font-bold text-[#091d2e] mb-6 sm:mb-8 tracking-tight">{t('contact.title')}</h2>
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               {/* Status Messages */}
