@@ -17,27 +17,25 @@ const Hero = () => {
     <section className="relative min-h-[80vh] sm:min-h-[85vh] md:min-h-[90vh] flex items-center overflow-hidden pt-16 sm:pt-20" id="home">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#091d2e] via-[#0f2942] to-[#1a3d5c]"></div>
-        <div className="absolute inset-0 bg-[url('/src/assets/unnamed.png')] bg-cover bg-center opacity-40"></div>
+        <div className="absolute inset-0 bg-[url('/src/assets/hero2.png')] bg-cover bg-center opacity-65"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#091d2e]/80 via-transparent to-transparent"></div>
       </div>
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className={`max-w-2xl ${currentLang === 'ar' ? 'text-right' : ''}`}>
           <span className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#f64c01] text-white font-headline text-xs sm:text-sm font-bold tracking-widest uppercase mb-4 sm:mb-6">
-            {currentLang === 'ar' ? 'منذ 2009 في أمستردام' : 'Sinds 2009 in Amsterdam'}
+            {currentLang === 'ar' ? 'مدرسة De Admiraal للقيادة' : 'Rijschool De Admiraal'}
           </span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white leading-tight mb-4 sm:mb-6 font-headline tracking-tighter">
             {currentLang === 'ar' ? (
               <>
-                دروس
-                <span className="block">قيادة</span>
-                <span className="block text-[#f64c01]">احترافية</span>
+                <span className="block">تعلم القيادة</span>
+                <span className="block text-[#f64c01]">بالثقة</span>
               </>
             ) : (
               <>
-                Professionele
-                <span className="block">Rijlessen</span>
-                <span className="block text-[#f64c01]">in Amsterdam</span>
+                <span className="block">Rijden met</span>
+                <span className="block text-[#f64c01]">Vertrouwen</span>
               </>
             )}
           </h1>

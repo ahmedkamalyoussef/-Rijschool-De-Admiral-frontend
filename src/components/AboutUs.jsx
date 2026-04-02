@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import i18n from '../i18n/i18n.js';
 import wheel from '../assets/wheel.png';
+import logo from '../../../Rijschool-De-Admiral-backend/src/utils/logo.png';
 
 const AboutUs = () => {
   const [currentLang, setCurrentLang] = useState(i18n.language || 'nl');
@@ -24,11 +25,12 @@ const AboutUs = () => {
             alt={currentLang === 'ar' ? 'سيارة تعليم القيادة' : 'Rijles auto'} 
             className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-3xl shadow-2xl"
           />
-          <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 bg-white p-6 sm:p-8 rounded-3xl shadow-xl z-20 border border-gray-50">
-            <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#b03500] font-headline">15+</p>
-            <p className="text-xs sm:text-sm font-label uppercase tracking-widest text-gray-400 font-bold mt-1">
-              {currentLang === 'ar' ? 'سنوات خبرة' : 'Jaar Ervaring'}
-            </p>
+          <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 bg-white p-4 sm:p-6 rounded-3xl shadow-xl z-20 border border-gray-50 flex items-center justify-center">
+            <img 
+              src={logo} 
+              alt="De Admiraal Logo" 
+              className="w-16 h-16 sm:w-16 sm:h-16 object-contain"
+            />
           </div>
         </div>
         
@@ -42,22 +44,22 @@ const AboutUs = () => {
             )}
           </h2>
           <div className="space-y-4 sm:space-y-6 text-base sm:text-lg text-gray-600 leading-relaxed">
-            <p>
-              {currentLang === 'ar' 
-                ? 'منذ عام 2009، أصبحت De Admiraal علامة بارزة في أمستردام. مع أكثر من 15 عامًا من الخبرة، ساعدنا آلاف الطلاب على الحصول على رخصة القيادة.'
-                : 'Sinds 2009 is De Admiraal een begrip in Amsterdam. Met meer dan 15 jaar ervaring hebben we duizenden leerlingen geholpen hun rijbewijs te halen.'
-              }
-            </p>
             <p className="font-bold text-[#091d2e] text-lg sm:text-xl">
               {currentLang === 'ar'
-                ? '"مساعدة الجميع على القيادة بأمان وثقة هي قيمتنا الأساسية."'
-                : '"Iedereen veilig en zelfverzekerd de weg op helpen is onze kernwaarde."'
+                ? '"القيادة ليست مجرد الانتقال من نقطة إلى أخرى، بل هي وعي، وسيطرة، ومسؤولية في كل لحظة."'
+                : '"Rijden is niet alleen van A naar B. Het draait om inzicht, controle en verantwoordelijkheid in elke situatie."'
               }
             </p>
             <p>
+              {currentLang === 'ar' 
+                ? 'في مدرستنا في روتردام وباريندريخت، نقدم تجربة تعليم مختلفة نتجاوز الدروس التقليدية. من خلال إرشاد شخصي ومنهج مدروس، نساعدك ليس فقط على النجاح، بل على أن تصبح سائقاً واثقاً ومدركاً للطريق.'
+                : 'Bij onze rijschool in Rotterdam en Barendrecht creëren we een leerervaring die verder gaat dan standaard rijlessen. Met persoonlijke begeleiding en een doordachte aanpak helpen wij jou om niet alleen te slagen, maar om een zelfverzekerde en bewuste bestuurder te worden.'
+              }
+            </p>
+            <p className="font-bold text-[#f64c01] text-lg sm:text-xl">
               {currentLang === 'ar'
-                ? 'يضمن نهجنا الشخصي أن كل طالب يمكنه التعلم بوتيرته الخاصة، بدعم من مدرسين صبورين هم خبراء في حركة المرور المزدحمة في أمستردام.'
-                : 'Onze persoonlijke aanpak zorgt ervoor dat elke leerling op zijn eigen tempo kan leren, ondersteund door geduldige instructeurs die expert zijn in het drukke Amsterdamse verkeer.'
+                ? 'لا نقدم برنامجاً ثابتاً للجميع، بل تدريباً يتكيف معك، لتنطلق بثقة وهدوء وتحكم كامل.'
+                : 'Geen standaard trajecten, maar een aanpak die zich aanpast aan jou. Zodat jij met rust, zekerheid en volledige controle de weg op gaat.'
               }
             </p>
           </div>

@@ -21,64 +21,70 @@ const WelcomeFeatures = () => {
           <div className={`lg:col-span-7 ${currentLang === 'ar' ? 'text-right' : ''}`}>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#091d2e] mb-4 sm:mb-6 font-headline tracking-tight leading-tight">
               {currentLang === 'ar' 
-                ? 'مرحباً بكم في مدرسة De Admiraal للقيادة'
-                : 'Welkom bij Rijschool De Admiraal'
+                ? 'مهمتنا وموقعنا'
+                : 'Onze Missie & Locatie'
               }
             </h2>
-            <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-2xl">
+            <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 leading-relaxed max-w-2xl font-bold text-[#091d2e]">
               {currentLang === 'ar'
-                ? 'نؤمن أن تعلم القيادة هو أكثر من مجرد قيادة مركبة. إنه يتعلق بالثقة بالنفس، والبصيرة، والأمان على الطريق.'
-                : 'Wij geloven dat leren rijden meer is dan alleen een voertuig besturen. Het gaat om zelfvertrouwen, inzicht en veiligheid op de weg.'
+                ? 'القيادة هي مسؤولية'
+                : 'Rijden is een verantwoordelijkheid'
               }
             </p>
-            <a className={`text-[#b03500] font-bold flex items-center gap-2 group text-base sm:text-lg w-fit ${currentLang === 'ar' ? 'flex-row-reverse mr-auto' : ''}`} href="#prijzen">
-              <span className={`${currentLang === 'ar' ? 'order-2' : ''}`}>
-                {currentLang === 'ar' ? 'اكتشف عروضنا' : 'Bekijk Ons Aanbod'}
-              </span>
-              <span className={`material-symbols-outlined transition-transform group-hover:translate-x-1 ${currentLang === 'ar' ? 'rotate-180 order-1' : ''}`}>arrow_forward</span>
-            </a>
+            <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-2xl">
+              {currentLang === 'ar'
+                ? 'نحن نقدم تجربة تدريبية ترفع من معايير تعلم قيادة السيارات. خدماتنا موجهة بشكل خاص للطلاب في منطقة روتردام، باريبدرخت والمناطق المحيطة.'
+                : 'Wij bieden een trainingservaring die de standaard van het leren autorijden verhoogt. Onze diensten zijn specifiek gericht op leerlingen in de regio Rotterdam, Barendrecht en omstreken.'
+              }
+            </p>
+            <p className="text-base sm:text-lg text-[#f64c01] font-bold mb-4 sm:mb-6">
+              {currentLang === 'ar'
+                ? 'مزايا نهجنا:'
+                : 'De Voordelen van Onze Aanpak:'
+              }
+            </p>
           </div>
 
           {/* Feature Cards */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/50 shadow-sm flex items-start gap-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#f64c01]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#f64c01]/10 rounded-xl flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined text-2xl sm:text-3xl text-[#f64c01]" style={{fontVariationSettings: "'FILL' 1"}}>verified_user</span>
               </div>
               <div className={currentLang === 'ar' ? 'text-right' : ''}>
                 <h4 className="font-headline font-bold text-[#091d2e] text-lg sm:text-xl">
-                  {currentLang === 'ar' ? 'مدربون ذوو خبرة' : 'Ervaren instructeurs'}
+                  {currentLang === 'ar' ? 'توجيه شخصي ودقيق' : 'Persoonlijke en nauwkeurige begeleiding'}
                 </h4>
                 <p className="text-sm text-gray-500 mt-1">
-                  {currentLang === 'ar' ? 'محترفون معتمدون بشغف للمهنة.' : 'Gecertificeerde professionals met passie voor het vak.'}
+                  {currentLang === 'ar' ? 'كل طالب يحصل على الاهتمام الفردي اللازم لعملية تعلم مثلى.' : 'Elke leerling krijgt de individuele aandacht die nodig is voor een optimaal leerproces.'}
                 </p>
               </div>
             </div>
 
             <div className="bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/50 shadow-sm flex items-start gap-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#f64c01]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#f64c01]/10 rounded-xl flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined text-2xl sm:text-3xl text-[#f64c01]" style={{fontVariationSettings: "'FILL' 1"}}>trending_up</span>
               </div>
               <div className={currentLang === 'ar' ? 'text-right' : ''}>
                 <h4 className="font-headline font-bold text-[#091d2e] text-lg sm:text-xl">
-                  {currentLang === 'ar' ? 'نسبة نجاح عالية' : 'Hoge slagingspercentage'}
+                  {currentLang === 'ar' ? 'ثقة كاملة بالنفس على الطريق' : 'Volledig zelfvertrouwen op de weg'}
                 </h4>
                 <p className="text-sm text-gray-500 mt-1">
-                  {currentLang === 'ar' ? 'طلابنا ينجحون بمعدل أسرع من المتوسط.' : 'Onze leerlingen slagen sneller dan het gemiddelde.'}
+                  {currentLang === 'ar' ? 'طريقتنا تضمن مشاركتك في حركة المرور بكل يقين وأمان.' : 'Onze methode zorgt ervoor dat je met zekerheid en veiligheid aan het verkeer deelneemt.'}
                 </p>
               </div>
             </div>
 
             <div className="bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/50 shadow-sm flex items-start gap-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#f64c01]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#f64c01]/10 rounded-xl flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined text-2xl sm:text-3xl text-[#f64c01]" style={{fontVariationSettings: "'FILL' 1"}}>directions_car</span>
               </div>
               <div className={currentLang === 'ar' ? 'text-right' : ''}>
                 <h4 className="font-headline font-bold text-[#091d2e] text-lg sm:text-xl">
-                  {currentLang === 'ar' ? 'مركبات حديثة' : 'Moderne voertuigen'}
+                  {currentLang === 'ar' ? 'دروس احترافية في روتردام' : 'Professionele lessen in Rotterdam'}
                 </h4>
                 <p className="text-sm text-gray-500 mt-1">
-                  {currentLang === 'ar' ? 'تعلم في أحدث الموديلات لأقصى درجات الراحة.' : 'Leren in de nieuwste modellen voor optimaal comfort.'}
+                  {currentLang === 'ar' ? 'خدماتنا موجهة بشكل خاص للطلاب في منطقة روتردام والمناطق المحيطة.' : 'Onze diensten zijn specifiek gericht op leerlingen in de regio Rotterdam en omstreken.'}
                 </p>
               </div>
             </div>
