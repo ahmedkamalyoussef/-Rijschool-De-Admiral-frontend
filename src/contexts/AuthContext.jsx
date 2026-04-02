@@ -215,6 +215,14 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: AUTH_ACTIONS.CLEAR_ERROR });
   };
 
+  // Update user function (for refreshing after profile changes)
+  const updateUser = (userData) => {
+    dispatch({
+      type: AUTH_ACTIONS.LOAD_USER_SUCCESS,
+      payload: userData,
+    });
+  };
+
   // Resend OTP function
   const resendOTP = async (email, type) => {
     try {
@@ -305,6 +313,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     clearError,
+    updateUser,
     resendOTP,
     forgotPassword,
     resetPassword,

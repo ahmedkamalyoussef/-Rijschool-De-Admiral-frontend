@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import toast from 'react-hot-toast';
 import i18n from '../i18n/i18n.js';
 import wheel from '../assets/logo.png';
 
@@ -51,13 +52,15 @@ const Login = () => {
 
     // Validation
     if (!formData.email || !formData.password) {
-      setError('يرجى ملء جميع الحقول المطلوبة');
+      const msg = currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Vul alle verplichte velden in';
+      toast.error(msg);
       setIsLoading(false);
       return;
     }
 
     if (!formData.email.includes('@')) {
-      setError('يرجى إدخال بريد إلكتروني صحيح');
+      const msg = currentLang === 'ar' ? 'يرجى إدخال بريد إلكتروني صحيح' : 'Voer een geldig e-mailadres in';
+      toast.error(msg);
       setIsLoading(false);
       return;
     }
@@ -65,8 +68,14 @@ const Login = () => {
     try {
       await login(formData.email, formData.password);
       setStep('otp');
+      toast.success(currentLang === 'ar' ? 'تم إرسال رمز التحقق إلى بريدك الإلكتروني' : 'Verificatiecode verzonden naar uw e-mail');
     } catch (error) {
-      setError(error.message || 'فشل في تسجيل الدخول');
+      const errorMsg = error.message || (currentLang === 'ar' ? 'فشل في تسجيل الدخول - تأكد من البريد وكلمة المرور' : 'Inloggen mislukt - controleer e-mail en wachtwoord');
+      setError(errorMsg);
+      // Use setTimeout to ensure toast shows after state update
+      setTimeout(() => {
+        toast.error(errorMsg);
+      }, 100);
     } finally {
       setIsLoading(false);
     }
@@ -79,16 +88,20 @@ const Login = () => {
 
     // Validation
     if (!formData.otp || formData.otp.length !== 6) {
-      setError('يرجى إدخال كود التأكيد المكون من 6 أرقام');
+      const msg = currentLang === 'ar' ? 'يرجى إدخال كود التأكيد المكون من 6 أرقام' : 'Voer de 6-cijferige verificatiecode in';
+      toast.error(msg);
       setIsLoading(false);
       return;
     }
 
     try {
       await verifyOTP(formData.email, formData.otp, 'login');
+      toast.success(currentLang === 'ar' ? 'تم تسجيل الدخول بنجاح!' : 'Succesvol ingelogd!');
       navigate('/admin/dashboard');
     } catch (error) {
-      setError(error.message || 'فشل في التحقق من كود التأكيد');
+      const errorMsg = error.message || (currentLang === 'ar' ? 'رمز التحقق غير صحيح أو منتهي الصلاحية' : 'Verificatiecode onjuist of verlopen');
+      toast.error(errorMsg);
+      setError(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -101,7 +114,8 @@ const Login = () => {
 
     // Validation
     if (!formData.email || !formData.email.includes('@')) {
-      setError('يرجى إدخال بريد إلكتروني صحيح');
+      const msg = currentLang === 'ar' ? 'يرجى إدخال بريد إلكتروني صحيح' : 'Voer een geldig e-mailadres in';
+      toast.error(msg);
       setIsLoading(false);
       return;
     }
@@ -109,8 +123,11 @@ const Login = () => {
     try {
       await forgotPassword(formData.email);
       setStep('reset');
+      toast.success(currentLang === 'ar' ? 'تم إرسال رمز التحقق لإعادة تعيين كلمة المرور' : 'Verificatiecode voor wachtwoordherstel verzonden');
     } catch (error) {
-      setError(error.message || 'فشل في إرسال كود استعادة كلمة المرور');
+      const errorMsg = error.message || (currentLang === 'ar' ? 'فشل في إرسال كود استعادة كلمة المرور' : 'Wachtwoordherstel mislukt');
+      toast.error(errorMsg);
+      setError(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -123,19 +140,22 @@ const Login = () => {
 
     // Validation
     if (!formData.otp || formData.otp.length !== 6) {
-      setError('يرجى إدخال كود التأكيد المكون من 6 أرقام');
+      const msg = currentLang === 'ar' ? 'يرجى إدخال كود التأكيد المكون من 6 أرقام' : 'Voer de 6-cijferige verificatiecode in';
+      toast.error(msg);
       setIsLoading(false);
       return;
     }
 
     if (formData.newPassword !== formData.confirmPassword) {
-      setError('كلمتا المرور غير متطابقتين');
+      const msg = currentLang === 'ar' ? 'كلمتا المرور غير متطابقتين' : 'Wachtwoorden komen niet overeen';
+      toast.error(msg);
       setIsLoading(false);
       return;
     }
 
     if (formData.newPassword.length < 6) {
-      setError('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+      const msg = currentLang === 'ar' ? 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' : 'Wachtwoord moet minimaal 6 tekens bevatten';
+      toast.error(msg);
       setIsLoading(false);
       return;
     }
@@ -143,9 +163,11 @@ const Login = () => {
     try {
       await resetPassword(formData.email, formData.otp, formData.newPassword, formData.confirmPassword);
       setStep('login');
-      setError('تم استعادة كلمة المرور بنجاح. يرجى تسجيل الدخول بكلمة المرور الجديدة.');
+      toast.success(currentLang === 'ar' ? 'تم استعادة كلمة المرور بنجاح. يرجى تسجيل الدخول.' : 'Wachtwoord succesvol hersteld. Log in met uw nieuwe wachtwoord.');
     } catch (error) {
-      setError(error.message || 'فشل في استعادة كلمة المرور');
+      const errorMsg = error.message || (currentLang === 'ar' ? 'فشل في استعادة كلمة المرور - رمز التحقق غير صحيح' : 'Wachtwoordherstel mislukt - onjuiste verificatiecode');
+      toast.error(errorMsg);
+      setError(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -159,16 +181,18 @@ const Login = () => {
       // Determine the OTP type based on current step
       const otpType = step === 'otp' ? 'login' : 'forgot';
       await resendOTP(formData.email, otpType);
-      setError('تم إعادة إرسال الكود بنجاح');
+      toast.success(currentLang === 'ar' ? 'تم إعادة إرسال الكود بنجاح' : 'Code succesvol opnieuw verzonden');
     } catch (error) {
-      setError(error.message || 'فشل في إعادة إرسال كود التأكيد');
+      const errorMsg = error.message || (currentLang === 'ar' ? 'فشل في إعادة إرسال كود التأكيد' : 'Opnieuw verzenden mislukt');
+      toast.error(errorMsg);
+      setError(errorMsg);
     } finally {
       setIsLoading(false);
     }
   };
 
   const renderLoginForm = () => (
-    <form onSubmit={handleLogin} className="space-y-6">
+    <form onSubmit={handleLogin} className="space-y-6" noValidate>
       <div>
         <label className={`block text-white/70 text-sm font-medium mb-2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
           {t('login.email')}
@@ -178,7 +202,6 @@ const Login = () => {
           name="email"
           value={formData.email}
           onChange={handleInputChange}
-          required
           className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="admin@example.com"
           style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
@@ -194,7 +217,6 @@ const Login = () => {
           name="password"
           value={formData.password}
           onChange={handleInputChange}
-          required
           className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="••••••••"
           style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
@@ -220,7 +242,7 @@ const Login = () => {
   );
 
   const renderOTPForm = () => (
-    <form onSubmit={handleVerifyOTP} className="space-y-6">
+    <form onSubmit={handleVerifyOTP} className="space-y-6" noValidate>
       <div className={`text-center mb-6 ${currentLang === 'ar' ? 'text-right' : ''}`}>
         <p className="text-white/70">
           {t('login.enter_otp')}
@@ -237,7 +259,6 @@ const Login = () => {
           name="otp"
           value={formData.otp}
           onChange={handleInputChange}
-          required
           maxLength={6}
           className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all text-center text-2xl tracking-widest ${currentLang === 'ar' ? 'direction-rtl' : ''}`}
           placeholder="123456"
@@ -274,7 +295,7 @@ const Login = () => {
   );
 
   const renderForgotPasswordForm = () => (
-    <form onSubmit={handleForgotPassword} className="space-y-6">
+    <form onSubmit={handleForgotPassword} className="space-y-6" noValidate>
       <div>
         <label className={`block text-white/70 text-sm font-medium mb-2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
           {t('login.email')}
@@ -284,7 +305,6 @@ const Login = () => {
           name="email"
           value={formData.email}
           onChange={handleInputChange}
-          required
           className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="admin@example.com"
           style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
@@ -310,7 +330,7 @@ const Login = () => {
   );
 
   const renderResetPasswordForm = () => (
-    <form onSubmit={handleResetPassword} className="space-y-6">
+    <form onSubmit={handleResetPassword} className="space-y-6" noValidate>
       <div className={`text-center mb-6 ${currentLang === 'ar' ? 'text-right' : ''}`}>
         <p className="text-white/70">
           {currentLang === 'ar' ? 'أدخل رمز التحقق المرسل إلى بريدك الإلكتروني وكلمة المرور الجديدة' : 'Enter OTP sent to your email and new password'}
@@ -327,7 +347,6 @@ const Login = () => {
           name="otp"
           value={formData.otp}
           onChange={handleInputChange}
-          required
           maxLength={6}
           className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all text-center text-2xl tracking-widest ${currentLang === 'ar' ? 'direction-rtl' : ''}`}
           placeholder="123456"
@@ -344,7 +363,6 @@ const Login = () => {
           name="newPassword"
           value={formData.newPassword}
           onChange={handleInputChange}
-          required
           className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="••••••••"
           style={currentLang === 'ar' ? {direction: 'rtl'} : {}}
@@ -360,7 +378,6 @@ const Login = () => {
           name="confirmPassword"
           value={formData.confirmPassword}
           onChange={handleInputChange}
-          required
           className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#f64c01] focus:bg-white/20 transition-all ${currentLang === 'ar' ? 'text-right direction-rtl' : ''}`}
           placeholder="••••••••"
           style={currentLang === 'ar' ? {direction: 'rtl'} : {}}

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Work+Sans:wght@300;400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Work+Sans:wght@300;400;500;600&family=Cairo:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 
 body {
@@ -52,6 +52,27 @@ h1, h2, h3, h4, h5, h6 {
 
 [dir="rtl"] .glass-nav {
     direction: rtl;
+}
+
+/* Arabic Font Support - Cairo */
+[lang="ar"],
+.arabic-font {
+    font-family: 'Cairo', sans-serif;
+}
+
+[lang="ar"] h1,
+[lang="ar"] h2,
+[lang="ar"] h3,
+[lang="ar"] h4,
+[lang="ar"] h5,
+[lang="ar"] h6,
+.arabic-font h1,
+.arabic-font h2,
+.arabic-font h3,
+.arabic-font h4,
+.arabic-font h5,
+.arabic-font h6 {
+    font-family: 'Cairo', sans-serif;
 }
 
 /* RTL Utility Classes */

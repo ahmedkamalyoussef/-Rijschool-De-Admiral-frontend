@@ -59,14 +59,14 @@ const AdminLayout = ({ children }) => {
           <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
             <div className="hidden sm:block h-8 w-px bg-white/20"></div>
             
-            <div className={`flex items-center gap-2 lg:gap-3 ${currentLang === 'ar' ? 'flex-row-reverse' : ''}`}>
-              <div className={`hidden sm:block ${currentLang === 'ar' ? 'text-left' : 'text-right'}`}>
+            <div className="flex items-center gap-2 lg:gap-3">
+              <div className={`hidden sm:block ${currentLang === 'ar' ? 'text-left order-2' : 'text-right'}`}>
                 <p className="text-xs font-bold text-white">{user?.firstName || 'Admin'}</p>
                 <p className="text-[10px] text-white/60">{currentLang === 'ar' ? 'مدير' : 'Administrator'}</p>
               </div>
-              <div className="w-8 h-8 rounded-full bg-[#f64c01] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-[#f64c01] flex items-center justify-center overflow-hidden">
                 {user?.imageUrl ? (
-                  <img src={`http://localhost:5000${user.imageUrl}`} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                  <img src={`http://localhost:5000${user.imageUrl}`} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-white font-bold text-sm">{user?.firstName?.charAt(0) || 'A'}</span>
                 )}

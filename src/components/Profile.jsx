@@ -6,7 +6,7 @@ import i18n from '../i18n/i18n.js';
 import wheel from '../assets/wheel.png';
 
 const Profile = () => {
-  const { user, updateProfile } = useAuth();
+  const { user, updateProfile, updateUser } = useAuth();
   const [profile, setProfile] = useState({
     firstName: '',
     lastName: '',
@@ -57,10 +57,14 @@ const Profile = () => {
     try {
       // Use updateProfile from AuthContext to update global user state
       await updateProfile(profile.firstName, profile.lastName);
-      setMessage('Profile updated successfully!');
+      // Update AuthContext user so navbar shows new name
+      if (user) {
+        updateUser({ ...user, firstName: profile.firstName, lastName: profile.lastName });
+      }
+      setMessage(currentLang === 'ar' ? 'تم تحديث الملف الشخصي بنجاح!' : 'Profile updated successfully!');
     } catch (error) {
       console.error('Error updating profile:', error);
-      setMessage(error.message || 'Error updating profile');
+      setMessage(error.message || (currentLang === 'ar' ? 'خطأ في تحديث الملف الشخصي' : 'Error updating profile'));
     } finally {
       setUpdating(false);
     }
@@ -99,12 +103,17 @@ const Profile = () => {
       try {
         const response = await adminService.updateImage(file);
         if (response.data.status) {
-          setProfile(prev => ({ ...prev, imageUrl: response.data.data.imageUrl }));
-          setMessage('Profile picture updated!');
+          const newImageUrl = response.data.data.imageUrl;
+          setProfile(prev => ({ ...prev, imageUrl: newImageUrl }));
+          // Update AuthContext user so navbar shows the new image
+          if (user) {
+            updateUser({ ...user, imageUrl: newImageUrl });
+          }
+          setMessage(currentLang === 'ar' ? 'تم تحديث الصورة بنجاح!' : 'Profile picture updated!');
         }
       } catch (error) {
         console.error('Error uploading image:', error);
-        setMessage('Error uploading image');
+        setMessage(currentLang === 'ar' ? 'خطأ في رفع الصورة' : 'Error uploading image');
       }
     }
   };

@@ -30,4 +30,14 @@ i18n
     }
   });
 
+// Update HTML lang and dir attributes when language changes
+i18n.on('languageChanged', (lng) => {
+  document.documentElement.lang = lng;
+  document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
+});
+
+// Set initial attributes
+document.documentElement.lang = i18n.language || 'nl';
+document.documentElement.dir = (i18n.language === 'ar') ? 'rtl' : 'ltr';
+
 export default i18n;

@@ -56,9 +56,10 @@ export default {
         "secondary": "#9b4500"
       },
       fontFamily: {
-        "headline": ["Plus Jakarta Sans"],
-        "body": ["Work Sans"],
-        "label": ["Work Sans"]
+        "headline": ["Plus Jakarta Sans", "Cairo"],
+        "body": ["Work Sans", "Cairo"],
+        "label": ["Work Sans", "Cairo"],
+        "arabic": ["Cairo", "sans-serif"]
       },
       borderRadius: {
         "DEFAULT": "0.25rem",

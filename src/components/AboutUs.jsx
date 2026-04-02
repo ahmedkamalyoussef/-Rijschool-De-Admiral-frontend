@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import i18n from '../i18n/i18n.js';
 import wheel from '../assets/wheel.png';
-import logo from '../../../Rijschool-De-Admiral-backend/src/utils/logo.png';
+import logo from '../assets/logo.png';
 
 const AboutUs = () => {
   const [currentLang, setCurrentLang] = useState(i18n.language || 'nl');

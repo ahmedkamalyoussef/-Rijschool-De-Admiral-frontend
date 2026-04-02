@@ -43,7 +43,9 @@ export const loginAdmin = async (data) => {
     return response.data;
   } catch (error) {
     const errorMessage = error.response?.data?.message || 'فشل في تسجيل الدخول';
-    throw { message: errorMessage, originalError: error };
+    const err = new Error(errorMessage);
+    err.originalError = error;
+    throw err;
   }
 };
 
@@ -64,7 +66,9 @@ export const verifyOTP = async (data) => {
     return response.data;
   } catch (error) {
     const errorMessage = error.response?.data?.message || 'فشل في التحقق من كود التأكيد';
-    throw { message: errorMessage, originalError: error };
+    const err = new Error(errorMessage);
+    err.originalError = error;
+    throw err;
   }
 };
 
@@ -94,7 +98,9 @@ export const forgotPassword = async (data) => {
     return response.data;
   } catch (error) {
     const errorMessage = error.response?.data?.message || 'فشل في إرسال كود استعادة كلمة المرور';
-    throw { message: errorMessage, originalError: error };
+    const err = new Error(errorMessage);
+    err.originalError = error;
+    throw err;
   }
 };
 
@@ -109,7 +115,9 @@ export const resetPassword = async (data) => {
     return response.data;
   } catch (error) {
     const errorMessage = error.response?.data?.message || 'فشل في استعادة كلمة المرور';
-    throw { message: errorMessage, originalError: error };
+    const err = new Error(errorMessage);
+    err.originalError = error;
+    throw err;
   }
 };
 
