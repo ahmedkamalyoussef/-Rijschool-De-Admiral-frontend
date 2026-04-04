@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import AdminLayout from './AdminLayout';
 import { adminService } from '../services/adminService';
 import { getImageUrl } from '../services/api.js';
@@ -12,6 +13,7 @@ const Packages = () => {
   const [loading, setLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingPackage, setEditingPackage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentLang, setCurrentLang] = useState(i18n.language || 'nl');
   const [formData, setFormData] = useState({
     nameAr: '',
@@ -70,6 +72,7 @@ const Packages = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     const packageData = {
       ...formData,
@@ -81,8 +84,10 @@ const Packages = () => {
     try {
       if (editingPackage) {
         await adminService.updatePackage(editingPackage.id, packageData);
+        toast.success(currentLang === 'ar' ? 'تم تحديث الباقة بنجاح' : 'Pakket succesvol bijgewerkt');
       } else {
         await adminService.createPackage(packageData);
+        toast.success(currentLang === 'ar' ? 'تم إضافة الباقة بنجاح' : 'Pakket succesvol toegevoegd');
       }
       
       // Refresh packages list
@@ -108,6 +113,10 @@ const Packages = () => {
       setShowCreateModal(false);
     } catch (error) {
       console.error('Error saving package:', error);
+      const errorMsg = error.message || (currentLang === 'ar' ? 'فشل في حفظ الباقة' : 'Failed to save package');
+      toast.error(errorMsg);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -475,12 +484,19 @@ const Packages = () => {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-[#f64c01] text-white py-2 rounded-lg hover:bg-[#e54200]"
+                    disabled={isSubmitting}
+                    className="flex-1 bg-[#f64c01] text-white py-2 rounded-lg hover:bg-[#e54200] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    {editingPackage 
-                      ? (currentLang === 'ar' ? 'تحديث الباقة' : 'Pakket Bijwerken')
-                      : (currentLang === 'ar' ? 'إضافة الباقة' : 'Pakket Toevoegen')
-                    }
+                    {isSubmitting ? (
+                      <>
+                        <span className="animate-spin material-symbols-outlined">sync</span>
+                        {currentLang === 'ar' ? 'جاري الحفظ...' : 'Bezig met opslaan...'}
+                      </>
+                    ) : (
+                      editingPackage 
+                        ? (currentLang === 'ar' ? 'تحديث الباقة' : 'Pakket Bijwerken')
+                        : (currentLang === 'ar' ? 'إضافة الباقة' : 'Pakket Toevoegen')
+                    )}
                   </button>
                 </div>
               </form>

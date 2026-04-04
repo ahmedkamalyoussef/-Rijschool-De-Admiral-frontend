@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import AdminLayout from './AdminLayout';
 import { postService } from '../services/postService';
 import { getImageUrl as getApiImageUrl } from '../services/api.js';
@@ -13,6 +14,7 @@ const Posts = () => {
   const [error, setError] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentLang, setCurrentLang] = useState(i18n.language || 'nl');
   const [formData, setFormData] = useState({
     fullName: '',
@@ -57,14 +59,17 @@ const Posts = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     try {
       if (editingPost) {
         // Update existing post
         await postService.updatePost(editingPost.id, formData);
+        toast.success(currentLang === 'ar' ? 'تم تحديث التوصية بنجاح' : 'Testimonial succesvol bijgewerkt');
       } else {
         // Create new post
         await postService.createPost(formData);
+        toast.success(currentLang === 'ar' ? 'تم إضافة التوصية بنجاح' : 'Testimonial succesvol toegevoegd');
       }
 
       // Refresh posts list
@@ -83,7 +88,10 @@ const Posts = () => {
       });
     } catch (error) {
       console.error('Error saving post:', error);
-      alert(error.message || 'Failed to save post');
+      const errorMsg = error.message || (currentLang === 'ar' ? 'فشل في حفظ التوصية' : 'Failed to save testimonial');
+      toast.error(errorMsg);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -400,12 +408,19 @@ const Posts = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-linear-to-r from-[#b03500] to-[#f64c01] text-white py-3 rounded-xl font-bold shadow-lg hover:shadow-[#f64c01]/30 transition-all"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-linear-to-r from-[#b03500] to-[#f64c01] text-white py-3 rounded-xl font-bold shadow-lg hover:shadow-[#f64c01]/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {editingPost 
-                    ? (currentLang === 'ar' ? 'تحديث التوصية' : 'Testimonial Bijwerken')
-                    : (currentLang === 'ar' ? 'إضافة التوصية' : 'Testimonial Toevoegen')
-                  }
+                  {isSubmitting ? (
+                    <>
+                      <span className="animate-spin material-symbols-outlined">sync</span>
+                      {currentLang === 'ar' ? 'جاري الحفظ...' : 'Bezig met opslaan...'}
+                    </>
+                  ) : (
+                    editingPost 
+                      ? (currentLang === 'ar' ? 'تحديث التوصية' : 'Testimonial Bijwerken')
+                      : (currentLang === 'ar' ? 'إضافة التوصية' : 'Testimonial Toevoegen')
+                  )}
                 </button>
               </div>
             </form>
