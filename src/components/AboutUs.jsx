@@ -38,9 +38,9 @@ const AboutUs = () => {
         <div className={`w-full lg:w-1/2 ${currentLang === 'ar' ? 'text-right' : ''}`}>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#091d2e] mb-6 sm:mb-8 font-headline tracking-tight leading-tight">
             {currentLang === 'ar' ? (
-              <>مهمتنا: <span className="text-[#f64c01]">الأمان</span> أولاً</>
+              <>مهمتنا: <span className="text-[#ff5c16]">الأمان</span> أولاً</>
             ) : (
-              <>Onze Missie: <span className="text-[#f64c01]">Veiligheid</span> Eerst</>
+              <>Onze Missie: <span className="text-[#ff5c16]">Veiligheid</span> Eerst</>
             )}
           </h2>
           <div className="space-y-4 sm:space-y-6 text-base sm:text-lg text-gray-600 leading-relaxed">
@@ -56,7 +56,7 @@ const AboutUs = () => {
                 : 'Bij onze rijschool in Rotterdam en Barendrecht creëren we een leerervaring die verder gaat dan standaard rijlessen. Met persoonlijke begeleiding en een doordachte aanpak helpen wij jou om niet alleen te slagen, maar om een zelfverzekerde en bewuste bestuurder te worden.'
               }
             </p>
-            <p className="font-bold text-[#f64c01] text-lg sm:text-xl">
+            <p className="font-bold text-[#ff5c16] text-lg sm:text-xl">
               {currentLang === 'ar'
                 ? 'لا نقدم برنامجاً ثابتاً للجميع، بل تدريباً يتكيف معك، لتنطلق بثقة وهدوء وتحكم كامل.'
                 : 'Geen standaard trajecten, maar een aanpak die zich aanpast aan jou. Zodat jij met rust, zekerheid en volledige controle de weg op gaat.'

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 // Create axios instance with base configuration
 const api = axios.create({
@@ -79,3 +79,28 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+// Export base URL for use in other components
+export { API_BASE_URL };
+
+/**
+ * Get full image URL from relative path or return as-is if already full URL
+ * @param {string} imageUrl - The image URL from API (can be relative or absolute)
+ * @returns {string} Full image URL
+ */
+export function getImageUrl(imageUrl) {
+  if (!imageUrl) return null;
+  
+  // If already full URL, return as-is
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  
+  // Clean up legacy 'src/' prefix
+  const cleanPath = imageUrl.replace(/^src\//, '');
+  
+  // Ensure path starts with /
+  const normalizedPath = cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`;
+  
+  return `${API_BASE_URL}${normalizedPath}`;
+}

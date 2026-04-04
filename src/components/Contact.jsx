@@ -74,7 +74,7 @@ const Contact = () => {
                 </div>
               )}
               {submitStatus === 'error' && (
-                <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl">
+                <div className="bg-red-50 border border-red-200 text-[#ff5c16] px-4 py-3 rounded-xl">
                   <p className="text-sm font-medium">{t('contact.error')}</p>
                 </div>
               )}
@@ -144,7 +144,7 @@ const Contact = () => {
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-[#b03500] text-white w-full py-3 sm:py-4 rounded-xl font-headline font-bold text-base sm:text-xl shadow-lg shadow-[#b03500]/20 hover:opacity-95 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="bg-[#ff5c16] text-white w-full py-3 sm:py-4 rounded-xl font-headline font-bold text-base sm:text-xl shadow-lg shadow-[#b03500]/20 hover:opacity-95 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -161,24 +161,24 @@ const Contact = () => {
           {/* Contact Info */}
           <div className={`w-full bg-[#091d2e] p-6 sm:p-8 lg:p-12 text-white flex flex-col ${currentLang === 'ar' ? ' rounded-l-3xl' : ' rounded-r-3xl'}`}>
             <div>
-              <h3 className="text-2xl sm:text-3xl font-headline font-bold mb-8 sm:mb-10 text-[#f64c01]">{t('contact.contact_info')}</h3>
+              <h3 className="text-2xl sm:text-3xl font-headline font-bold mb-8 sm:mb-10 text-[#ff5c16]">{t('contact.contact_info')}</h3>
               <div className="space-y-6 sm:space-y-8">
                 <div className="flex items-start gap-4">
-                  <span className="material-symbols-outlined text-[#f64c01] text-2xl sm:text-3xl">location_on</span>
+                  <span className="material-symbols-outlined text-[#ff5c16] text-2xl sm:text-3xl">location_on</span>
                   <div>
                     <p className="font-bold text-base sm:text-lg">{currentLang === 'ar' ? 'العنوان' : 'Adres'}</p>
                     <p className="text-gray-300 text-sm sm:text-base">Onyxlan 40,<br/>3162TC Rhoon</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <span className="material-symbols-outlined text-[#f64c01] text-2xl sm:text-3xl">call</span>
+                  <span className="material-symbols-outlined text-[#ff5c16] text-2xl sm:text-3xl">call</span>
                   <div>
                     <p className="font-bold text-base sm:text-lg">{t('contact.phone')}</p>
                     <p className="text-gray-300 text-sm sm:text-base">+31635689999</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <span className="material-symbols-outlined text-[#f64c01] text-2xl sm:text-3xl">chat</span>
+                  <span className="material-symbols-outlined text-[#ff5c16] text-2xl sm:text-3xl">chat</span>
                   <div>
                     <p className="font-bold text-base sm:text-lg">WhatsApp</p>
                     <a 

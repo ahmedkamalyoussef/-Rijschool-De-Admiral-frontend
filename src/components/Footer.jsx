@@ -72,7 +72,7 @@ const Footer = () => {
           <p className="text-gray-400 text-sm mb-4 font-body leading-relaxed">{currentLang === 'ar' ? 'ابقَ على اطلاع بالعروض ونصائح القيادة الجديدة.' : 'Blijf op de hoogte van acties en nieuwe rij-tips.'}</p>
           <div className="flex flex-col sm:flex-row gap-2">
             <input className="bg-white/5 border border-white/10 rounded-lg p-3 w-full text-white text-sm focus:ring-1 focus:ring-[#b03500] outline-none" placeholder={currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email'} type="email"/>
-            <button className="bg-[#b03500] px-4 rounded-lg text-white font-bold hover:bg-opacity-90 transition-all text-sm">OK</button>
+            <button className="bg-[#ff5c16] px-4 rounded-lg text-white font-bold hover:bg-opacity-90 transition-all text-sm">OK</button>
           </div>
         </div>
       </div>

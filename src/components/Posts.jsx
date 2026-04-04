@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
 import { postService } from '../services/postService';
+import { getImageUrl as getApiImageUrl } from '../services/api.js';
 import i18n from '../i18n/i18n.js';
 import wheel from '../assets/wheel.png';
 import hero from '../assets/hero.png';
@@ -129,18 +130,9 @@ const Posts = () => {
   };
 
   const getImageUrl = (post) => {
-    console.log('Post image URL:', post.imageUrl); // Debug log
     if (post.imageUrl) {
-      // Remove 'src/' prefix if present and use /uploads endpoint
-      const cleanPath = post.imageUrl.replace('src/', '');
-      const imageUrl = post.imageUrl.startsWith('http') 
-        ? post.imageUrl 
-        : `http://localhost:5000/${cleanPath}`;
-      console.log('Constructed image URL:', imageUrl); // Debug log
-      return imageUrl;
+      return getApiImageUrl(post.imageUrl) || [hero, unnamed, wheel][Math.floor(Math.random() * 3)];
     }
-    // Fallback to placeholder images
-    console.log('Using placeholder image'); // Debug log
     return [hero, unnamed, wheel][Math.floor(Math.random() * 3)];
   };
 

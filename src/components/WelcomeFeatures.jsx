@@ -37,7 +37,7 @@ const WelcomeFeatures = () => {
                 : 'Wij bieden een trainingservaring die de standaard van het leren autorijden verhoogt. Onze diensten zijn specifiek gericht op leerlingen in de regio Rotterdam, Barendrecht en omstreken.'
               }
             </p>
-            <p className="text-base sm:text-lg text-[#f64c01] font-bold mb-4 sm:mb-6">
+            <p className="text-base sm:text-lg text-[#ff5c16] font-bold mb-4 sm:mb-6">
               {currentLang === 'ar'
                 ? 'مزايا نهجنا:'
                 : 'De Voordelen van Onze Aanpak:'
@@ -48,8 +48,8 @@ const WelcomeFeatures = () => {
           {/* Feature Cards */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/50 shadow-sm flex items-start gap-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#f64c01]/10 rounded-xl flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-2xl sm:text-3xl text-[#f64c01]" style={{fontVariationSettings: "'FILL' 1"}}>verified_user</span>
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#ff5c16]/10 rounded-xl flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-2xl sm:text-3xl text-[#ff5c16]" style={{fontVariationSettings: "'FILL' 1"}}>verified_user</span>
               </div>
               <div className={currentLang === 'ar' ? 'text-right' : ''}>
                 <h4 className="font-headline font-bold text-[#091d2e] text-lg sm:text-xl">
@@ -63,7 +63,7 @@ const WelcomeFeatures = () => {
 
             <div className="bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/50 shadow-sm flex items-start gap-4">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#f64c01]/10 rounded-xl flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-2xl sm:text-3xl text-[#f64c01]" style={{fontVariationSettings: "'FILL' 1"}}>trending_up</span>
+                <span className="material-symbols-outlined text-2xl sm:text-3xl text-[#ff5c16]" style={{fontVariationSettings: "'FILL' 1"}}>trending_up</span>
               </div>
               <div className={currentLang === 'ar' ? 'text-right' : ''}>
                 <h4 className="font-headline font-bold text-[#091d2e] text-lg sm:text-xl">
@@ -77,7 +77,7 @@ const WelcomeFeatures = () => {
 
             <div className="bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/50 shadow-sm flex items-start gap-4">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#f64c01]/10 rounded-xl flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-2xl sm:text-3xl text-[#f64c01]" style={{fontVariationSettings: "'FILL' 1"}}>directions_car</span>
+                <span className="material-symbols-outlined text-2xl sm:text-3xl text-[#ff5c16]" style={{fontVariationSettings: "'FILL' 1"}}>directions_car</span>
               </div>
               <div className={currentLang === 'ar' ? 'text-right' : ''}>
                 <h4 className="font-headline font-bold text-[#091d2e] text-lg sm:text-xl">

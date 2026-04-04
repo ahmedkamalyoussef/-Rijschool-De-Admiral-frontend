@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { API_BASE_URL } from '../services/api.js';
 import wheel from '../assets/wheel.png';
 
 const ResetPassword = () => {
@@ -42,7 +43,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/admin/reset-password', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

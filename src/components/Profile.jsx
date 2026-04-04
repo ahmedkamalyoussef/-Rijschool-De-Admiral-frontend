@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
 import { useAuth } from '../contexts/AuthContext';
 import { adminService } from '../services/adminService';
+import { getImageUrl } from '../services/api.js';
 import i18n from '../i18n/i18n.js';
 import wheel from '../assets/wheel.png';
 
@@ -154,7 +155,7 @@ const Profile = () => {
               <div className="relative inline-block mb-4">
                 <div className="w-32 h-32 rounded-full bg-[#f64c01] flex items-center justify-center mx-auto border-4 border-white/20">
                   {profile.imageUrl ? (
-                    <img src={`http://localhost:5000${profile.imageUrl}`} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                    <img src={getImageUrl(profile.imageUrl)} alt="Profile" className="w-full h-full rounded-full object-cover" />
                   ) : (
                     <span className="text-white text-4xl font-bold">
                       {profile.firstName?.charAt(0) || 'A'}{profile.lastName?.charAt(0) || ''}

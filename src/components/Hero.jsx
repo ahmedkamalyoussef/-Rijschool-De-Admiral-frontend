@@ -23,19 +23,19 @@ const Hero = () => {
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className={`max-w-2xl ${currentLang === 'ar' ? 'text-right' : ''}`}>
-          <span className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#f64c01] text-white font-headline text-xs sm:text-sm font-bold tracking-widest uppercase mb-4 sm:mb-6">
+          <span className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#ff5c16] text-white font-headline text-xs sm:text-sm font-bold tracking-widest uppercase mb-4 sm:mb-6">
             {currentLang === 'ar' ? 'مدرسة De Admiraal للقيادة' : 'Rijschool De Admiraal'}
           </span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white leading-tight mb-4 sm:mb-6 font-headline tracking-tighter">
             {currentLang === 'ar' ? (
               <>
                 <span className="block">تعلم القيادة</span>
-                <span className="block text-[#f64c01]">بالثقة</span>
+                <span className="block text-[#ff5c16]">بثقة</span>
               </>
             ) : (
               <>
                 <span className="block">Rijden met</span>
-                <span className="block text-[#f64c01]">Vertrouwen</span>
+                <span className="block text-[#ff5c16]">Vertrouwen</span>
               </>
             )}
           </h1>
@@ -43,7 +43,7 @@ const Hero = () => {
             {t('hero.subtitle')}
           </p>
           <div className={`flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 ${currentLang === 'ar' ? 'sm:flex-row-reverse justify-end' : ''}`}>
-            <a className="bg-orange-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-headline font-bold text-base sm:text-lg shadow-lg hover:shadow-[#FF9900]/20 transition-all text-center" href="#contact">
+            <a className="bg-[#ff5c16] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-headline font-bold text-base sm:text-lg shadow-lg hover:shadow-[#ff5c16]/20 transition-all text-center" href="#contact">
               {t('hero.cta')}
             </a>
             <a className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-headline font-bold text-base sm:text-lg hover:bg-white/20 transition-all text-center" href="#over-ons">

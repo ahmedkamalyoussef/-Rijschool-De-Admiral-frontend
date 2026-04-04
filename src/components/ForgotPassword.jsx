@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_BASE_URL } from '../services/api.js';
 import wheel from '../assets/wheel.png';
 
 const ForgotPassword = () => {
@@ -14,7 +15,7 @@ const ForgotPassword = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/admin/forgot-password', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/forgot-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

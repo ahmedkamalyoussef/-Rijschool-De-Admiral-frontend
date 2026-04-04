@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
 import { adminService } from '../services/adminService';
+import { getImageUrl } from '../services/api.js';
 import i18n from '../i18n/i18n.js';
 import wheel from '../assets/wheel.png';
 import hero from '../assets/hero.png';
@@ -198,7 +199,7 @@ const Packages = () => {
         </div>
 
         {/* Packages Grid */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6 text-center align-middle content-center">
           {packages.map((pkg) => (
             <div key={pkg.id} className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 overflow-hidden">
               <div className="p-6">
@@ -206,7 +207,7 @@ const Packages = () => {
                 {pkg.imageUrl && (
                   <div className="mb-4">
                     <img 
-                      src={`http://localhost:5000/${pkg.imageUrl}`} 
+                      src={getImageUrl(pkg.imageUrl)} 
                       alt={pkg.nameAr}
                       className="w-full h-48 object-cover rounded-lg"
                     />

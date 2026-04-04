@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchTestimonials } from '../store/slices/postSlice';
+import { getImageUrl } from '../services/api.js';
 import i18n from '../i18n/i18n.js';
 
 const Testimonials = () => {
@@ -32,7 +33,7 @@ const Testimonials = () => {
       <section className="py-16 sm:py-20 lg:py-24 bg-[#f1f6ff] relative overflow-hidden" id="afgestudeerden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#b03500]"></div>
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#ff5c16]"></div>
             <p className="mt-2 text-gray-500">{currentLang === 'ar' ? 'جاري التحميل...' : 'Laden...'}</p>
           </div>
         </div>
@@ -56,17 +57,15 @@ const Testimonials = () => {
     <section className="py-16 sm:py-20 lg:py-24 bg-[#f1f6ff] relative overflow-hidden" id="afgestudeerden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-headline font-extrabold text-center mb-12 sm:mb-16 tracking-tight text-[#091d2e]">{t('testimonials.title')}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 sm:gap-12">
+        <div className="flex flex-wrap justify-center gap-8 sm:gap-12">
           {testimonials.length > 0 ? (
             testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="flex flex-col items-center text-center">
+              <div key={testimonial.id} className="flex flex-col items-center text-center w-[220px]">
                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-white shadow-lg mb-6 bg-gray-100">
                   {testimonial.imageUrl ? (
                     <img 
                       className="w-full h-full object-cover"
-                      src={testimonial.imageUrl.startsWith('http') 
-                        ? testimonial.imageUrl 
-                        : `http://localhost:5000${testimonial.imageUrl.replace('src/', '/')}`}
+                      src={getImageUrl(testimonial.imageUrl)}
                       alt={testimonial.fullName}
                       onError={(e) => {
                         e.target.style.display = 'none';
@@ -81,7 +80,7 @@ const Testimonials = () => {
                   </div>
                 </div>
                 <h4 className="font-headline font-bold text-xl sm:text-2xl text-[#091d2e] mb-2">{testimonial.fullName}</h4>
-                <p className="text-xs sm:text-sm font-label text-[#b03500] font-bold tracking-widest uppercase mb-4">
+                <p className="text-xs sm:text-sm font-label text-[#ff5c16] font-bold tracking-widest uppercase mb-4">
                   {new Date(testimonial.createdAt).toLocaleDateString(currentLang === 'ar' ? 'ar-SA' : 'nl-NL', { month: 'long', year: 'numeric' })}
                 </p>
                 <p className="text-gray-600 italic leading-relaxed text-base sm:text-lg">"{getDescription(testimonial)}"</p>

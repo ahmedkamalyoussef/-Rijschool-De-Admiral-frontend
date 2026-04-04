@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import i18n from '../i18n/i18n.js';
 import AdminSidebar from './AdminSidebar';
+import { getImageUrl } from '../services/api.js';
 
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -66,7 +67,7 @@ const AdminLayout = ({ children }) => {
               </div>
               <div className="w-8 h-8 rounded-full bg-[#f64c01] flex items-center justify-center overflow-hidden">
                 {user?.imageUrl ? (
-                  <img src={`http://localhost:5000${user.imageUrl}`} alt="Profile" className="w-full h-full object-cover" />
+                  <img src={getImageUrl(user.imageUrl)} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-white font-bold text-sm">{user?.firstName?.charAt(0) || 'A'}</span>
                 )}
